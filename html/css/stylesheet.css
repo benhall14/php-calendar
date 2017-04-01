@@ -1,0 +1,43 @@
+h1{
+    text-align: center;
+    font-family: 'Oxygen';
+    color: #555;
+    margin-top: 50px;
+    font-size: 30px;
+    line-height: 30px;
+    text-transform: uppercase;
+}
+
+h1 span{
+    font-size:20px;
+    color: #999;
+    position: relative;
+    top: -3px;
+    left: 10px;
+}
+
+div.summary,
+div.copyright {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    background: #F6F6F6;
+    margin: 20px 0;
+    padding: 10px;
+    line-height:22px;
+}
+
+div.summary p, 
+div.copyright p {
+    margin:0;
+}
+
+div.copyright p{
+    font-size: 14px;
+}
+
+.row.fix {
+  display: flex;
+  flex-wrap: wrap;
+}
+
