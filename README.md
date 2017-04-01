@@ -6,6 +6,11 @@ You can use the addEvent() or addEvents() methods to mark events on the generate
 # Usage
 Please make sure you have added the required classes.
 
+You should probably also make sure you include the calendar.css stylesheet, unless you are creating your own stylesheet.
+```html
+<link rel="stylesheet" type="text/css" href="css/calendar.css">
+```
+
 In its simplest form, use the following to create a calendar
 
 ```php
@@ -21,6 +26,7 @@ In its simplest form, use the following to create a calendar
             true,           # should the date be masked - boolean default true
             'myclass abc'   # (optional) additional classes to be included on the event days
         );
+
     # or for multiple events
         $events = array();
         $events[] = array('2017-01-14', '2017-01-14', 'My Birthday', true, 'myclass abc');
@@ -39,11 +45,22 @@ In its simplest form, use the following to create a calendar
         echo $calendar->draw(date('Y-05-01')); # draw a calendar for May this year
         echo $calendar->draw(date('Y-06-01')); # draw a calendar for June this year
 
+    # to use the pre-made color schemes, include the calendar.css stylesheet 
+    # and pass the color choice to the draw method, such as:
+        echo $calendar->draw(date('Y-m-d'));            # print a (default) turquoise calendar
+        echo $calendar->draw(date('Y-m-d'), 'purple');  # print a purple calendar
+        echo $calendar->draw(date('Y-m-d'), 'pink');    # print a pink calendar
+        echo $calendar->draw(date('Y-m-d'), 'orange');  # print a orange calendar
+        echo $calendar->draw(date('Y-m-d'), 'yellow');  # print a yellow calendar
+        echo $calendar->draw(date('Y-m-d'), 'green');   # print a green calendar
+        echo $calendar->draw(date('Y-m-d'), 'grey');    # print a grey calendar
+        echo $calendar->draw(date('Y-m-d'), 'blue');    # print a blue calendar
 
 ```
 
 # Requirements
 PHP 5.3+
+
 PHP DateTime
 
 # License
