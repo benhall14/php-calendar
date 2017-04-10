@@ -47,7 +47,7 @@ $calendar
 
             <div class="summary">
             
-                <p>A simple PHP class to generate calendars.</p>
+                <p>A simple PHP class to generate calendars with 8 different color schemes to choose from (or use your own style sheet).</p>
             
                 <p>You can add events using the optional API.</p>
             

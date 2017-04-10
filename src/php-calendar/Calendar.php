@@ -201,7 +201,7 @@ class Calendar
 
             $today_class = ($running_day->format('Y-m-d') == $today->format('Y-m-d')) ? ' today' : '';
 
-            $calendar .= '<td class="day' . $class . $today_class . '" title="' . htmlentities($event->summary) . '">';
+            $calendar .= '<td class="day' . $class . $today_class . '" title="' . htmlentities($event_summary) . '">';
 
             $calendar .= '<div>';
             
