@@ -3,6 +3,7 @@
     color: #FFF;
     width:100%;
     font-family: 'Oxygen';
+    table-layout:fixed;
 }
 
 .calendar.purple{
@@ -77,8 +78,8 @@
     background: rgba(0, 0, 0, 0.25);
 }
 
-.mask-start,
-.mask,
-.mask-end {
+.calendar tbody tr td.mask-start,
+.calendar tbody tr td.mask,
+.calendar tbody tr td.mask-end {
     background: #C23B22;
 }

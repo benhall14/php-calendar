@@ -25,7 +25,7 @@ $calendar
 
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-        <title>PHP Calendar By Benjamin Hall</title>
+        <title>PHP Calendar By benhall14</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -41,7 +41,7 @@ $calendar
 
     <body>
         
-        <h1>PHP Calendar <span>By Benjamin Hall</span></h1>
+        <h1>PHP Calendar <span>By benhall14</span></h1>
         
         <div class="container">
 
@@ -149,7 +149,7 @@ $calendar
 
             <div class="copyright">
                 
-                <p>&copy; Copyright Benjamin Hall <a href="https://github.com/benhall14/php-calendar">https://github.com/benhall14/php-calendar</a></p>
+                <p>&copy; Copyright Benjamin Hall :: <a href="https://github.com/benhall14/php-calendar">https://github.com/benhall14/php-calendar</a></p>
             
             </div>
 
