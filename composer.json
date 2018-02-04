@@ -1,0 +1,23 @@
+{
+    "name": "benhall14/php-calendar",
+    "description": "A simple PHP class to generate calendars.",
+    "homepage": "https://github.com/benhall14/php-calendar",
+    "keywords": ["calendar", "time", "date", "calendars"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Hall",
+            "email": "benhall14@hotmail.com",
+            "homepage": "https://github.com/benhall14",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "benhall14\\": "src/"
+        }
+    }
+}
