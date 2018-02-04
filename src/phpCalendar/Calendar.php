@@ -11,6 +11,7 @@ use stdClass;
  * @copyright  Copyright (c) Benjamin Hall
  * @license https://github.com/benhall14/php-calendar
  * @package protocols
+ * @version 1.1
  * @author Benjamin Hall <https://linkedin.com/in/benhall14>
 */
 class Calendar
@@ -46,7 +47,15 @@ class Calendar
         
         $event->mask = $mask ? true : false;
         
-        $event->classes = $classes ? implode(' ', $classes) : false;
+        if ($classes) {
+            if (is_array($classes)) {
+                $classes = implode(' ', $classes);
+            }
+
+            $event->classes = $classes;
+        } else {
+            $event->classes = false;
+        }
         
         $event->summary = $summary ? $summary : false;
 
@@ -120,12 +129,17 @@ class Calendar
      * @param string $format  The format of the preceding date.
      * @return string         The calendar
      */
-    public function draw($date, $color)
+    public function draw($date = false, $color = false)
     {
         $calendar = '';
 
-        $date = DateTime::createFromFormat('Y-m-d', $date);
-        $date->modify('first day of this month');
+        if ($date) {
+            $date = DateTime::createFromFormat('Y-m-d', $date);
+            $date->modify('first day of this month');
+        } else {
+            $date = new DateTime();
+            $date->modify('first day of this month');
+        }
 
         $today = new DateTime();
 
@@ -187,12 +201,12 @@ class Calendar
                         $class .= ($event->classes) ? ' ' . $event->classes : '';
                         $event_summary .= ($event->summary) ? : '';
 
-                    # is the current day in between the start and end of the event
+                        # is the current day in between the start and end of the event
                     } elseif ($running_day->getTimestamp() > $event->start->getTimestamp()
                         && $running_day->getTimestamp() <    $event->end->getTimestamp()) {
                         $class .= $event->mask ? ' mask' : '';
 
-                    # is the current day the start of the event
+                        # is the current day the start of the event
                     } elseif ($running_day->format('Y-m-d') == $event->end->format('Y-m-d')) {
                         $class .= $event->mask ? ' mask-end' : '';
                     }

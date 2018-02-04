@@ -4,6 +4,16 @@ A PHP class that makes generating calendars as easy as possible.
 You can use the addEvent() or addEvents() methods to mark events on the generated calendar.
 
 This is fully compatible with *PHP 5 through to **PHP 7***
+# Installation via Composer
+You can now install this class via composer.
+
+	$ composer require benhall14/php-calendar
+	
+**Remember** to add the composer autoloader before using the class and use the correct namespace.
+
+	require 'vendor/autoload.php';
+
+	use benhall14\phpCalendar\Calendar as Calendar;
 
 # Usage
 Please make sure you have added the required classes.
