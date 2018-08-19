@@ -96,7 +96,8 @@ In its simplest form, use the following to create a calendar
 **PHP DateTime**
 
 # License
-Copyright (c) 2016-2018 Benjamin Hall, benhall14@hotmail.com
+Copyright (c) 2016-2018 Benjamin Hall, ben@conobe.co.uk 
+https://conobe.co.uk
 
 Licensed under the MIT license
 
