@@ -3,7 +3,7 @@ A PHP class that makes generating calendars as easy as possible.
 
 You can use the addEvent() or addEvents() methods to mark events on the generated calendar.
 
-This is fully compatible with *PHP 5 through to **PHP 7***
+This is fully compatible with *PHP 5 through to **PHP 7.3+***
 # Installation via Composer
 You can now install this class via composer.
 
@@ -38,16 +38,27 @@ In its simplest form, use the following to create a calendar
 	    '2017-01-14',   # end date in Y-m-d format
 	    'My Birthday',  # event name text
 	    true,           # should the date be masked - boolean default true
-	    ['myclass', 'abc']   # (optional) additional classes in array format to be included on the event days
+	    ['myclass', 'abc']   # (optional) additional classes in either string or array format to be included on the event days
 	);
 
     # or for multiple events
 
 	$events = array();
 
-	$events[] = array('2017-01-14', '2017-01-14', 'My Birthday', true, ['myclass', 'abc']);
+	$events[] = array(
+		'start' => '2017-01-14',
+		'end' => '2017-01-14',
+		'summary' => 'My Birthday',
+		'mask' => true,
+		'classes' => ['myclass', 'abc']
+	);
 
-	$events[] = array('2017-12-25', '2017-12-25', 'Christmas', true);
+	$events[] = array(
+		'start' => '2017-12-25',
+		'end' => '2017-12-25',
+		'summary' => 'Christmas',
+		'mask' => true
+	);
 
 	$calendar->addEvents($events);
 
@@ -91,12 +102,12 @@ In its simplest form, use the following to create a calendar
 
 # Requirements
 
-**Fully tested to work with PHP 5.3, PHP 5.5, PHP 5.6, and PHP 7**
+**Fully tested to work with PHP 5.3, 5.5, 5.6, 7.0, 7.1, 7.2 and 7.3**
 
 **PHP DateTime**
 
 # License
-Copyright (c) 2016-2018 Benjamin Hall, ben@conobe.co.uk 
+Copyright (c) 2016-2019 Benjamin Hall, ben@conobe.co.uk 
 https://conobe.co.uk
 
 Licensed under the MIT license

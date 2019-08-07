@@ -1,19 +1,33 @@
 <?php
 
-require('../src/php-calendar/Calendar.php');
+require('../src/phpCalendar/Calendar.php');
 
 use benhall14\phpCalendar\Calendar;
 
 $calendar = new Calendar();
 
 $calendar
-    ->addEvent('2017-01-14', '2017-01-14', 'My Birthday', true)
-    ->addEvent('2017-12-25', '2017-12-25', 'Christmas', true);
+    ->addEvent(date('Y-01-14'), date('Y-01-14'), 'My Birthday', true)
+    ->addEvent(date('Y-12-25'), date('Y-12-25'), 'Christmas', true);
 
 #   or
-#   $events = array(array('2017-01-14', '2017-01-14', 'My Birthday', true), array('2017-12-25', '2017-12-25', 'Christmas', true));
-#   $calendar->addEvents($events);
-
+/*
+$events = array(
+    array(
+        'start' => date('Y-01-14'),
+        'end' => date('Y-01-14'),
+        'summary' => 'My Birthday',
+        'mask' => true
+    ), 
+    array(
+        'start' => date('Y-12-25'),
+        'end' => date('Y-12-25'),
+        'summary' => 'Christmas',
+        'mask' => true
+    )
+);
+$calendar->addEvents($events);
+*/
 ?>
 <!doctype html>
 

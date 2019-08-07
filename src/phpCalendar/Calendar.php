@@ -11,8 +11,8 @@ use stdClass;
  * @copyright  Copyright (c) Benjamin Hall
  * @license https://github.com/benhall14/php-calendar
  * @package protocols
- * @version 1.1
- * @author Benjamin Hall <https://linkedin.com/in/benhall14>
+ * @version 1.2
+ * @author Benjamin Hall <https://conobe.co.uk>
 */
 class Calendar
 {
