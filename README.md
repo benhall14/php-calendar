@@ -38,14 +38,14 @@ In its simplest form, use the following to create a calendar
 	    '2017-01-14',   # end date in Y-m-d format
 	    'My Birthday',  # event name text
 	    true,           # should the date be masked - boolean default true
-	    'myclass abc'   # (optional) additional classes to be included on the event days
+	    ['myclass', 'abc']   # (optional) additional classes in array format to be included on the event days
 	);
 
     # or for multiple events
 
 	$events = array();
 
-	$events[] = array('2017-01-14', '2017-01-14', 'My Birthday', true, 'myclass abc');
+	$events[] = array('2017-01-14', '2017-01-14', 'My Birthday', true, ['myclass', 'abc']);
 
 	$events[] = array('2017-12-25', '2017-12-25', 'Christmas', true);
 
