@@ -60,7 +60,7 @@ In its simplest form, use the following to create a calendar
     $calendar->hideSundays(); 		# This will hide Sundays
     $calendar->hideMondays(); 		# This will hide Mondays
     $calendar->hideTuesdays(); 		# This will hide Tuesdays
-    $calendar->hideWednesdays();	        # This will hide Wednesdays
+    $calendar->hideWednesdays();	# This will hide Wednesdays
     $calendar->hideThursdays();		# This will hide Thursdays
     $calendar->hideFridays();		# This will hide Fridays
     
@@ -124,9 +124,9 @@ In its simplest form, use the following to create a calendar
 You can now change the weekly start date from a **Sunday** to a **Monday**. To activate this, simple use the **useMondayStartingDate()** method before you 'draw'.
 ```php
 
-$calendar = new Calendar();
-$calendar->useMondayStartingDate();
-$calendar->draw(date('Y-m-d'), 'green');
+    $calendar = new Calendar();
+    $calendar->useMondayStartingDate();
+    $calendar->draw(date('Y-m-d'), 'green');
 ```
 
 #### Translated Calendars
