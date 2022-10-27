@@ -143,6 +143,13 @@ class Calendar
     private $hide_saturdays = false;
 
     /**
+     * Add class for month table
+     * 
+     * @var string
+     */
+    private $month_css_class = '';
+
+    /**
      * Sets the array of days. Useful when translating.
      *
      * @param array $initials
@@ -345,6 +352,10 @@ class Calendar
         return $styles;
     }
 
+    public function setMonthCssClass($css_class = '') {
+        $this->month_css_class = $css_class;
+    }
+
     /**
      * The events array.
      * @var array
@@ -471,7 +482,7 @@ class Calendar
      * 
      * @return string         The calendar
      */
-    public function draw($date = false, $color = false)
+    public function draw($date = false, $color = '')
     {
         $calendar = '';
 
@@ -498,9 +509,11 @@ class Calendar
 
         $total_days_in_month = (int) $date->format('t');
 
-        $color = $color ? : '';
+        $color = strlen($color) > 0 ? ' ' . $color : '';
+
+        $custom_month_css_class = strlen($this->month_css_class) > 0 ? ' ' . $this->month_css_class : '';
         
-        $calendar .= '<table class="calendar ' . $color . '">';
+        $calendar .= '<table class="calendar' . $color . $custom_month_css_class . '">';
     
         $calendar .= '<thead>';
 
