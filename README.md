@@ -64,6 +64,9 @@ In its simplest form, use the following to create a calendar
     $calendar->hideThursdays();		# This will hide Thursdays
     $calendar->hideFridays();		# This will hide Fridays
     
+    # (optional) - if you want month tables to have a specific CSS class, you can use the following:
+    $calendar->setMonthCssClass('custom-class');
+    
     # (optional) - Translated Calendars - currently, there is only Spanish, but see "Translations" below for adding your own strings.
     $calendar->useSpanish(); 
 
