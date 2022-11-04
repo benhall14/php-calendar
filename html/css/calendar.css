@@ -83,3 +83,34 @@
 .calendar tbody tr td.mask-end {
     background: #C23B22;
 }
+
+.calendar .cal-weekview-time {
+    border: rgba(0,0,0.25);
+}
+
+.calendar .cal-weekview-time {
+    padding: 4px 2px 2px 4px;
+}
+
+.calendar .cal-weekview-time>div {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 10px;
+    min-height: 50px;
+}
+
+.calendar .cal-weekview-event.mask-start,
+.calendar .cal-weekview-event.mask,
+.calendar .cal-weekview-event.mask-end {
+    background: #C23B22;
+    margin-bottom: 3px;
+    padding: 5px;
+}
+
+.calendar .cal-weekview-time-th {
+    background: rgba(0, 0, 0, .1);
+}
+
+.calendar .cal-weekview-time-th>div {
+    padding: 10px;
+    min-height: 50px;
+}
