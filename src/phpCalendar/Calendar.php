@@ -653,7 +653,7 @@ class Calendar
 
         foreach ($this->getDays() as $index => $day) {
 
-            $calendar .= '<th class="cal-th cal-th-' . $index . '">' . ($this->day_format == 'full' ? $day['full'] : $day['initials']) . '</th>';
+            $calendar .= '<th class="cal-th cal-th-' . $index . ' cal-' . $index .'">' . ($this->day_format == 'full' ? $day['full'] : $day['initials']) . '</th>';
         }
 
         $calendar .= '</tr>';
@@ -709,7 +709,9 @@ class Calendar
 
             $today_class = ($running_day->format('Y-m-d') == $today->format('Y-m-d')) ? ' today' : '';
 
-            $calendar .= '<td class="day cal-day cal-day-' . strtolower($running_day->format('l')) . ' ' . $class . $today_class . '" title="' . htmlentities(strip_tags($event_summary)) . '">';
+            $day = strtolower($running_day->format('l'));
+
+            $calendar .= '<td class="day cal-day cal-day-' . $day . ' cal-' . $day . ' ' . $class . $today_class . '" title="' . htmlentities(strip_tags($event_summary)) . '">';
 
             $calendar .= '<div class="cal-day-box">';
 
@@ -869,7 +871,8 @@ class Calendar
 
         $days = $this->getDays();
         foreach ($dates as $date) {
-            $calendar .= '<th class="cal-th cal-th-' . strtolower($date->format('l')). '">';
+            $day = strtolower($date->format('l'));
+            $calendar .= '<th class="cal-th cal-th-' . $day. ' cal-' . $day . '">';
             $calendar .= '<div class="cal-weekview-dow">' . $days[strtolower($date->format('l'))]['full'] . '</div>';
             $calendar .= '<div class="cal-weekview-day">' . $date->format('j') . '</div>';
             $calendar .= '<div class="cal-weekview-month">' . $this->months[strtolower($date->format('F'))] . '</div>';
@@ -899,7 +902,9 @@ class Calendar
 
                 $today_class = ($date->format('Y-m-d H') == $today->format('Y-m-d H')) ? ' today' : '';
 
-                $calendar .= '<td class="cal-weekview-time ' . $today_class . '">';
+                $day = strtolower($date->format('l'));
+
+                $calendar .= '<td class="cal-weekview-time ' . $today_class . ' cal-' . $day . '">';
 
                 $calendar .= '<div>';
 
