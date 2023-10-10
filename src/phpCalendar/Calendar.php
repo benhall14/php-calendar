@@ -873,7 +873,7 @@ class Calendar
         foreach ($dates as $date) {
             $day = strtolower($date->format('l'));
             $calendar .= '<th class="cal-th cal-th-' . $day. ' cal-' . $day . '">';
-            $calendar .= '<div class="cal-weekview-dow">' . $days[strtolower($date->format('l'))]['full'] . '</div>';
+            $calendar .= '<div class="cal-weekview-dow">' . $days[$day]['full'] . '</div>';
             $calendar .= '<div class="cal-weekview-day">' . $date->format('j') . '</div>';
             $calendar .= '<div class="cal-weekview-month">' . $this->months[strtolower($date->format('F'))] . '</div>';
             $calendar .= '</th>';
@@ -902,9 +902,7 @@ class Calendar
 
                 $today_class = ($date->format('Y-m-d H') == $today->format('Y-m-d H')) ? ' today' : '';
 
-                $day = strtolower($date->format('l'));
-
-                $calendar .= '<td class="cal-weekview-time ' . $today_class . ' cal-' . $day . '">';
+                $calendar .= '<td class="cal-weekview-time ' . $today_class . ' cal-' . strtolower($date->format('l')) . '">';
 
                 $calendar .= '<div>';
 
