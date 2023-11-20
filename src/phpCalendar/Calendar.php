@@ -845,9 +845,13 @@ class Calendar
         }
 
         if ($this->starting_day == 6) {
-            $date->modify('last sunday');
+            if (date('l') !== 'Sunday') {
+                $date->modify('last sunday');
+            }
         } elseif ($this->starting_day == 0) {
-            $date->modify('last monday');
+            if (date('l') !== 'Monday') {
+                $date->modify('last monday');
+            }
         }
 
         $dates = [];
