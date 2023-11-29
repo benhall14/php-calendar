@@ -845,11 +845,11 @@ class Calendar
         }
 
         if ($this->starting_day == 6) {
-            if (date('l') !== 'Sunday') {
+            if ($date->format('l') !== 'Sunday') {
                 $date->modify('last sunday');
             }
         } elseif ($this->starting_day == 0) {
-            if (date('l') !== 'Monday') {
+            if ($date->format('l') !== 'Monday') {
                 $date->modify('last monday');
             }
         }
