@@ -156,6 +156,18 @@ $calendar->addEvents($events);
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     
                     <?php echo $calendar->draw(date('Y-12-1'), 'purple'); ?>
+                    
+                    <hr />    
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12">
+
+                    <?php echo $calendar->useWeekView()->draw(date('Y-12-1'), 'grey'); ?>
 
                 </div>
 

@@ -1,3 +1,7 @@
+.weekly-calendar{
+    min-width:850px;
+}
+
 .calendar{
     background: #2CA8C2;
     color: #FFF;
@@ -113,4 +117,13 @@
 .calendar .cal-weekview-time-th>div {
     padding: 10px;
     min-height: 50px;
+}
+
+@media screen and (max-width:768px){
+    #weekly-calendar-container{
+        display: block;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
 }
