@@ -13,7 +13,7 @@ use stdClass;
  * @package protocols
  * @version 1.2
  * @author Benjamin Hall <https://conobe.co.uk>
-*/
+ */
 class Calendar
 {
     /**
@@ -76,7 +76,7 @@ class Calendar
             'dow' => 1,
             'initials' => 'M',
             'full' => 'Monday',
-        ], 
+        ],
         'tuesday' => [
             'dow' => 2,
             'initials' => 'T',
@@ -103,18 +103,18 @@ class Calendar
             'full' => 'Saturday',
         ],
     ];
-    
+
     /**
      * The month names. Default EN.
      *
      * @var array
      */
     private $months = [
-        'january' => 'January', 
-        'february' => 'February', 
-        'march' => 'March', 
-        'april' => 'April', 
-        'may' => 'May', 
+        'january' => 'January',
+        'february' => 'February',
+        'march' => 'March',
+        'april' => 'April',
+        'may' => 'May',
         'june' => 'June',
         'july' => 'July',
         'august' => 'August',
@@ -137,35 +137,35 @@ class Calendar
      * @var boolean
      */
     private $hide_sundays = false;
-    
+
     /**
      * Hide all 'mondays' from the calendar view.
      *
      * @var boolean
      */
     private $hide_mondays = false;
-    
+
     /**
      * Hide all 'tuesdays' from the calendar view.
      *
      * @var boolean
      */
     private $hide_tuesdays = false;
-    
+
     /**
      * Hide all 'wednesdays' from the calendar view.
      *
      * @var boolean
      */
     private $hide_wednesdays = false;
-    
+
     /**
      * Hide all 'thursdays' from the calendar view.
      *
      * @var boolean
      */
     private $hide_thursdays = false;
-    
+
     /**
      * Hide all 'fridays' from the calendar view.
      *
@@ -240,17 +240,17 @@ class Calendar
         ]);
 
         $this->setMonths([
-            'january' => 'Enero',  
-            'february' => 'Febrero',  
-            'march' => 'Marzo',  
-            'april' => 'Abril',  
-            'may' => 'Mayo',  
-            'june' => 'Junio',  
-            'july' => 'Julio',  
-            'august' => 'Agosto',  
-            'september' => 'Septiembre',  
-            'october' => 'Octubre',  
-            'november' => 'Noviembre',  
+            'january' => 'Enero',
+            'february' => 'Febrero',
+            'march' => 'Marzo',
+            'april' => 'Abril',
+            'may' => 'Mayo',
+            'june' => 'Junio',
+            'july' => 'Julio',
+            'august' => 'Agosto',
+            'september' => 'Septiembre',
+            'october' => 'Octubre',
+            'november' => 'Noviembre',
             'december' => 'Diciembre'
         ]);
 
@@ -414,7 +414,8 @@ class Calendar
      */
     public function stylesheet($print = true)
     {
-        $styles = '<style>.calendar{background:#2ca8c2;color:#fff;width:100%;font-family:Oxygen;table-layout:fixed}.calendar.purple{background:#913ccd}.calendar.pink{background:#f15f74}.calendar.orange{background:#f76d3c}.calendar.yellow{background:#f7d842}.calendar.green{background:#98cb4a}.calendar.grey{background:#839098}.calendar.blue{background:#5481e6}.calendar-title th{font-size:22px;font-weight:700;padding:20px;text-align:center;text-transform:uppercase;background:rgba(0,0,0,.05)}.calendar-header th{padding:10px;text-align:center;background:rgba(0,0,0,.1)}.calendar tbody tr td{text-align:center;vertical-align:top;width:14.28%}.calendar tbody tr td.pad{background:rgba(255,255,255,.1)}.calendar tbody tr td.day div:first-child{padding:4px;line-height:17px;height:25px}.calendar tbody tr td.day div:last-child{font-size:10px;padding:4px;min-height:25px}.calendar tbody tr td.today{background:rgba(0,0,0,.25)}.calendar tbody tr td.mask,.calendar tbody tr td.mask-end,.calendar tbody tr td.mask-start{background:#c23b22}.calendar .cal-weekview-time{padding:4px 2px 2px 4px;}.calendar .cal-weekview-time > div{background:rgba(0,0,0,0.03);padding:10px;min-height:50px;}.calendar .cal-weekview-event.mask-start,.calendar .cal-weekview-event.mask,.calendar .cal-weekview-event.mask-end{background:#C23B22;margin-bottom:3px;padding:5px;}.calendar .cal-weekview-time-th{background:rgba(0,0,0,.1);}.calendar .cal-weekview-time-th > div{padding:10px;min-height:50px;}</style>';
+        $styles = '<style>.weekly-calendar{min-width:850px;}.calendar{background:#2ca8c2;color:#fff;width:100%;font-family:Oxygen;table-layout:fixed}.calendar.purple{background:#913ccd}.calendar.pink{background:#f15f74}.calendar.orange{background:#f76d3c}.calendar.yellow{background:#f7d842}.calendar.green{background:#98cb4a}.calendar.grey{background:#839098}.calendar.blue{background:#5481e6}.calendar-title th{font-size:22px;font-weight:700;padding:20px;text-align:center;text-transform:uppercase;background:rgba(0,0,0,.05)}.calendar-header th{padding:10px;text-align:center;background:rgba(0,0,0,.1)}.calendar tbody tr td{text-align:center;vertical-align:top;width:14.28%}.calendar tbody tr td.pad{background:rgba(255,255,255,.1)}.calendar tbody tr td.day div:first-child{padding:4px;line-height:17px;height:25px}.calendar tbody tr td.day div:last-child{font-size:10px;padding:4px;min-height:25px}.calendar tbody tr td.today{background:rgba(0,0,0,.25)}.calendar tbody tr td.mask,.calendar tbody tr td.mask-end,.calendar tbody tr td.mask-start{background:#c23b22}.calendar .cal-weekview-time{padding:4px 2px 2px 4px;}.calendar .cal-weekview-time > div{background:rgba(0,0,0,0.03);padding:10px;min-height:50px;}.calendar .cal-weekview-event.mask-start,.calendar .cal-weekview-event.mask,.calendar .cal-weekview-event.mask-end{background:#C23B22;margin-bottom:3px;padding:5px;}.calendar .cal-weekview-time-th{background:rgba(0,0,0,.1);}.calendar .cal-weekview-time-th > div{padding:10px;min-height:50px;}</style>';
+        $styles .= '<style>@media screen and (max-width:768px){#weekly-calendar-container{display: block;overflow-x: scroll;overflow-y: hidden;white-space: nowrap;}}</style>';
 
         if ($print) {
             echo $styles;
@@ -443,21 +444,23 @@ class Calendar
     public function addEvent($start, $end, $summary = false, $mask = false, $classes = false)
     {
         $event = new stdClass();
-        
+
         if (strpos($start, ' ') !== false) {
             $event->start = DateTime::createFromFormat('Y-m-d H:i', $start);
         } else {
             $event->start = DateTime::createFromFormat('Y-m-d', $start);
+            $event->start->setTime(0, 0, 0);
         }
 
         if (strpos($end, ' ') !== false) {
             $event->end = DateTime::createFromFormat('Y-m-d H:i', $end);
         } else {
             $event->end = DateTime::createFromFormat('Y-m-d', $end);
+            $event->end->setTime(23, 59, 59);
         }
-        
+
         $event->mask = $mask ? true : false;
-        
+
         if ($classes) {
             if (is_array($classes)) {
                 $classes = implode(' ', $classes);
@@ -467,7 +470,7 @@ class Calendar
         } else {
             $event->classes = false;
         }
-        
+
         $event->summary = $summary ? $summary : false;
 
         $this->events[] = $event;
@@ -581,21 +584,34 @@ class Calendar
     /**
      * Find an event from the internal pool
      * @param  DateTime $date The date to match an event for.
+     * @param  string   $view The type of view - either Week or Month
+     * 
      * @return array          Either an array of events or false.
      */
-    private function findEvents(DateTime $date)
+    private function findEvents(DateTime $date, $view = 'month')
     {
         $found_events = array();
 
         if (isset($this->events)) {
             foreach ($this->events as $event) {
-                if ($date->getTimestamp() >= $event->start->getTimestamp() && $date->getTimestamp() <= $event->end->getTimestamp()) {
-                    $found_events[] = $event;
+                if ($view == 'month') {
+                    // Extracting and comparing only the dates (Y-m-d) to avoid time-based exclusion
+                    $eventStartDate = (new DateTime($event->start->format('Y-m-d')))->getTimestamp();
+                    $eventEndDate = (new DateTime($event->end->format('Y-m-d')))->getTimestamp();
+                    $inputDate = (new DateTime($date->format('Y-m-d')))->getTimestamp();
+
+                    if ($inputDate >= $eventStartDate && $inputDate <= $eventEndDate) {
+                        $found_events[] = $event;
+                    }
+                } else {
+                    if ($date->getTimestamp() >= $event->start->getTimestamp() && $date->getTimestamp() <= $event->end->getTimestamp()) {
+                        $found_events[] = $event;
+                    }
                 }
             }
         }
 
-        return ($found_events) ? : false;
+        return ($found_events) ?: false;
     }
 
     /**
@@ -653,7 +669,7 @@ class Calendar
 
         foreach ($this->getDays() as $index => $day) {
 
-            $calendar .= '<th class="cal-th cal-th-' . $index . ' cal-' . $index .'">' . ($this->day_format == 'full' ? $day['full'] : $day['initials']) . '</th>';
+            $calendar .= '<th class="cal-th cal-th-' . $index . '">' . ($this->day_format == 'full' ? $day['full'] : $day['initials']) . '</th>';
         }
 
         $calendar .= '</tr>';
@@ -679,7 +695,7 @@ class Calendar
 
         do {
 
-            $events = $this->findEvents($running_day);
+            $events = $this->findEvents($running_day, 'month');
 
             $class = '';
 
@@ -709,9 +725,7 @@ class Calendar
 
             $today_class = ($running_day->format('Y-m-d') == $today->format('Y-m-d')) ? ' today' : '';
 
-            $day = strtolower($running_day->format('l'));
-
-            $calendar .= '<td class="day cal-day cal-day-' . $day . ' cal-' . $day . ' ' . $class . $today_class . '" title="' . htmlentities(strip_tags($event_summary)) . '">';
+            $calendar .= '<td class="day cal-day cal-day-' . strtolower($running_day->format('l')) . ' ' . $class . $today_class . '" title="' . htmlentities(strip_tags($event_summary)) . '">';
 
             $calendar .= '<div class="cal-day-box">';
 
@@ -825,7 +839,7 @@ class Calendar
      */
     public function asWeekView($date = false, $color = false)
     {
-        $calendar = '';
+        $calendar = '<div class="weekly-calendar-container">';
 
         $colspan = 7;
 
@@ -845,13 +859,9 @@ class Calendar
         }
 
         if ($this->starting_day == 6) {
-            if ($date->format('l') !== 'Sunday') {
-                $date->modify('last sunday');
-            }
+            $date->modify('last sunday');
         } elseif ($this->starting_day == 0) {
-            if ($date->format('l') !== 'Monday') {
-                $date->modify('last monday');
-            }
+            $date->modify('last monday');
         }
 
         $dates = [];
@@ -865,7 +875,7 @@ class Calendar
 
         $color = $color ?: '';
 
-        $calendar .= '<table class="calendar ' . $color . ' ' . implode(' ', $this->table_classes) . '">';
+        $calendar .= '<table class="weekly-calendar calendar ' . $color . ' ' . implode(' ', $this->table_classes) . '">';
 
         $calendar .= '<thead>';
 
@@ -875,9 +885,8 @@ class Calendar
 
         $days = $this->getDays();
         foreach ($dates as $date) {
-            $day = strtolower($date->format('l'));
-            $calendar .= '<th class="cal-th cal-th-' . $day. ' cal-' . $day . '">';
-            $calendar .= '<div class="cal-weekview-dow">' . $days[$day]['full'] . '</div>';
+            $calendar .= '<th class="cal-th cal-th-' . strtolower($date->format('l')) . '">';
+            $calendar .= '<div class="cal-weekview-dow">' . $days[strtolower($date->format('l'))]['full'] . '</div>';
             $calendar .= '<div class="cal-weekview-day">' . $date->format('j') . '</div>';
             $calendar .= '<div class="cal-weekview-month">' . $this->months[strtolower($date->format('F'))] . '</div>';
             $calendar .= '</th>';
@@ -889,16 +898,21 @@ class Calendar
 
         $calendar .= '<tbody>';
 
+        $used_events = [];
+
         foreach ($this->getTimes() as $time) {
             $calendar .= '<tr>';
 
-            $calendar .= '<td class="cal-weekview-time-th"><div>' . $time . '</div></td>';
-            
-            foreach ($dates as $date ){
+            $start_time = $time;
+            $end_time = date('H:i', strtotime($time . ' + ' . ($this->time_interval) . ' minutes'));
+
+            $calendar .= '<td class="cal-weekview-time-th"><div>' . $start_time . ' - ' . $end_time . '</div></td>';
+
+            foreach ($dates as $date) {
 
                 $datetime = $date->setTime(substr($time, 0, 2), substr($time, 3, 2));
-                
-                $events = $this->findEvents($datetime);
+
+                $events = $this->findEvents($datetime, 'week');
 
                 $class = '';
 
@@ -906,18 +920,23 @@ class Calendar
 
                 $today_class = ($date->format('Y-m-d H') == $today->format('Y-m-d H')) ? ' today' : '';
 
-                $calendar .= '<td class="cal-weekview-time ' . $today_class . ' cal-' . strtolower($date->format('l')) . '">';
+                $calendar .= '<td class="cal-weekview-time ' . $today_class . '">';
 
                 $calendar .= '<div>';
 
                 if ($events) {
                     foreach ($events as $index => $event) {
+                        if (in_array($event, $used_events)) {
+                            $event_summary = '&nbsp;';
+                        } else {
+                            $event_summary = ($event->summary) ?: '';
+                            $used_events[] = $event;
+                        }
+
                         # is the current day the start of the event
                         if ($event->start->format('Y-m-d') == $date->format('Y-m-d')) {
                             $class .= $event->mask ? ' mask-start' : '';
                             $class .= ($event->classes) ? ' ' . $event->classes : '';
-                            $event_summary = ($event->summary) ?: '';
-
                             # is the current day in between the start and end of the event
                         } elseif (
                             $date->getTimestamp() > $event->start->getTimestamp()
@@ -933,10 +952,9 @@ class Calendar
                         $calendar .= '<div class="cal-weekview-event ' . $class . '">';
                         $calendar .= $event_summary;
                         $calendar .= '</div>';
-
                     }
                 }
-                
+
                 $calendar .= '</div>';
 
                 $calendar .= '</td>';
@@ -947,6 +965,8 @@ class Calendar
         $calendar .= '</tbody>';
 
         $calendar .= '</table>';
+
+        $calendar .= '</div>';
 
         return $calendar;
     }
@@ -962,7 +982,7 @@ class Calendar
     {
         if ($this->type == 'week') {
             return $this->asWeekView($date, $color);
-        } else{
+        } else {
             return $this->asMonthView($date, $color);
         }
     }

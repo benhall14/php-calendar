@@ -1,36 +1,40 @@
-.calendar{
+.weekly-calendar {
+    min-width: 850px;
+}
+
+.calendar {
     background: #2CA8C2;
     color: #FFF;
-    width:100%;
+    width: 100%;
     font-family: 'Oxygen';
-    table-layout:fixed;
+    table-layout: fixed;
 }
 
-.calendar.purple{
-    background:#913CCD;
+.calendar.purple {
+    background: #913CCD;
 }
 
-.calendar.pink{
+.calendar.pink {
     background: #F15F74;
 }
 
-.calendar.orange{
+.calendar.orange {
     background: #F76D3C;
 }
 
-.calendar.yellow{
+.calendar.yellow {
     background: #F7D842;
 }
 
-.calendar.green{
+.calendar.green {
     background: #98CB4A;
 }
 
-.calendar.grey{
+.calendar.grey {
     background: #839098;
 }
 
-.calendar.blue{
+.calendar.blue {
     background: #5481E6;
 }
 
@@ -49,32 +53,31 @@
     background: rgba(0, 0, 0, 0.1);
 }
 
-.calendar tbody tr td{
+.calendar tbody tr td {
     text-align: center;
     vertical-align: top;
     width: 14.28%;
 }
 
-.calendar tbody tr td.pad{
+.calendar tbody tr td.pad {
     background: rgba(255, 255, 255, 0.1);
 }
 
-.calendar tbody tr td.day{
+.calendar tbody tr td.day {}
+
+.calendar tbody tr td.day div:first-child {
+    padding: 4px;
+    line-height: 17px;
+    height: 25px;
 }
 
-.calendar tbody tr td.day div:first-child{
-    padding:4px;
-    line-height:17px;
-    height:25px;
+.calendar tbody tr td.day div:last-child {
+    font-size: 10px;
+    padding: 4px;
+    min-height: 25px;
 }
 
-.calendar tbody tr td.day div:last-child{
-    font-size:10px;
-    padding:4px;
-    min-height:25px;
-}
-
-.calendar tbody tr td.today{
+.calendar tbody tr td.today {
     background: rgba(0, 0, 0, 0.25);
 }
 
@@ -85,7 +88,7 @@
 }
 
 .calendar .cal-weekview-time {
-    border: rgba(0,0,0.25);
+    border: rgba(0, 0, 0.25);
 }
 
 .calendar .cal-weekview-time {
@@ -113,4 +116,13 @@
 .calendar .cal-weekview-time-th>div {
     padding: 10px;
     min-height: 50px;
+}
+
+@media screen and (max-width:768px) {
+    .weekly-calendar-container {
+        display: block;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
 }
