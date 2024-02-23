@@ -118,6 +118,10 @@
     min-height: 50px;
 }
 
+.calendar .event-summary-row {
+    display: block;
+}
+
 @media screen and (max-width:768px) {
     .weekly-calendar-container {
         display: block;
