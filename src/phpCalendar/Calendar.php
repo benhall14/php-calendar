@@ -543,7 +543,7 @@ class Calendar
 
     /**
      * Add any custom table classes that should be injected into the calender table header.
-     * 
+     *
      * This can be a space separated list, or an array of classes.
      *
      * @param mixed $classes
@@ -573,7 +573,7 @@ class Calendar
         $array = $this->days;
 
         if ($this->starting_day == 0) {
-            $key = array_key_first($array);
+            $key = $this->array_key_first($array);
             $first = array_shift($array);
             $array[$key] = $first;
         }
@@ -582,10 +582,24 @@ class Calendar
     }
 
     /**
+     * For PHP < 7.3 compatibility. array_key_first() function.
+     *
+     * @param array $array
+     *
+     * @return string
+     */
+    protected function array_key_first($array)
+    {
+        foreach ($array as $key => $value) {
+            return $key;
+        }
+    }
+
+    /**
      * Find an event from the internal pool
      * @param  DateTime $date The date to match an event for.
      * @param  string   $view The type of view - either Week or Month
-     * 
+     *
      * @return array          Either an array of events or false.
      */
     private function findEvents(DateTime $date, $view = 'month')
@@ -975,7 +989,7 @@ class Calendar
      * Draw the calendar and return HTML output.
      * @param string  $date    The date of this calendar.
      * @param string  $format  The format of the preceding date.
-     * 
+     *
      * @return string         The calendar
      */
     public function draw($date = false, $color = false)
