@@ -93,6 +93,7 @@ Or, you can break it down with full customisability:
 	    'My Birthday',  # event name text
 	    true,           # should the date be masked - boolean default true
 	    ['myclass', 'abc']   # (optional) additional classes in either string or array format to be included on the event days
+	    ['event-class', 'abc']   # (optional) additional classes in either string or array format to be included on the event summary box
 	);
 
     # or for multiple events
@@ -104,7 +105,8 @@ Or, you can break it down with full customisability:
 		'end' => '2022-01-14',
 		'summary' => 'My Birthday',
 		'mask' => true,
-		'classes' => ['myclass', 'abc']
+		'classes' => ['myclass', 'abc'],
+        'event_box_classes' => ['event-box-1']
 	);
 
 	$events[] = array(

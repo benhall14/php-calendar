@@ -438,10 +438,11 @@ class Calendar
      * @param string  $end     The end date in Y-m-d format.
      * @param string $summary The summary string of the event.
      * @param boolean $mask    The masking class.
-     * @param boolean $classes (optional) A list of classes to use for the event.
+     * @param mixed $classes (optional) A list of classes to use for the event.
+     * @param mixed $event_box_classes (optional) A list of classes to apply to the event summary box.
      * @return object Return this object for chain-ability.
      */
-    public function addEvent($start, $end, $summary = false, $mask = false, $classes = false)
+    public function addEvent($start, $end, $summary = false, $mask = false, $classes = false, $event_box_classes = false)
     {
         $event = new stdClass();
 
@@ -471,6 +472,16 @@ class Calendar
             $event->classes = false;
         }
 
+        if ($event_box_classes) {
+            if (is_array($event_box_classes)) {
+                $event_box_classes = implode(' ', $event_box_classes);
+            }
+
+            $event->event_box_classes = $event_box_classes;
+        } else {
+            $event->event_box_classes = false;
+        }
+
         $event->summary = $summary ? $summary : false;
 
         $this->events[] = $event;
@@ -498,7 +509,8 @@ class Calendar
                     $classes = isset($event['classes']) ? $event['classes'] : false;
                     $mask = isset($event['mask']) ? (bool) $event['mask'] : false;
                     $summary = isset($event['summary']) ? $event['summary'] : false;
-                    $this->addEvent($event['start'], $event['end'], $summary, $mask, $classes);
+                    $event_box_classes = isset($event['event_box_classes']) ? $event['event_box_classes'] : false;
+                    $this->addEvent($event['start'], $event['end'], $summary, $mask, $classes, $event_box_classes);
                 }
             }
         }
@@ -721,7 +733,7 @@ class Calendar
                     if ($event->start->format('Y-m-d') == $running_day->format('Y-m-d')) {
                         $class .= $event->mask ? ' mask-start' : '';
                         $class .= ($event->classes) ? ' ' . $event->classes : '';
-                        $event_summary .= ($event->summary) ? '<span class="event-summary-row">'.$event->summary.'</span>': '';
+                        $event_summary .= ($event->summary) ? '<span class="event-summary-row ' . ($event->event_box_classes) . '">' . $event->summary . '</span>' : '';
 
                         # is the current day in between the start and end of the event
                     } elseif (
