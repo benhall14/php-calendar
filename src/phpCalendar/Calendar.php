@@ -257,6 +257,60 @@ class Calendar
         return $this;
     }
 
+    /** 
+     * Toggles the calendar locale to Greek. Thanks @alinakis
+     */
+    public function useGreek()
+    {
+        $this->setDays([
+            'sunday' => [
+                'initials' => 'Κ',
+                'full' => 'Κυριακή'
+            ],
+            'monday' => [
+                'initials' => 'Δ',
+                'full' => 'Δευτέρα',
+            ],
+            'tuesday' => [
+                'initials' => 'Τ',
+                'full' => 'Τρίτη',
+            ],
+            'wednesday' => [
+                'initials' => 'Τ',
+                'full' => 'Τετάρτη',
+            ],
+            'thursday' => [
+                'initials' => 'Π',
+                'full' => 'Πέμπτη',
+            ],
+            'friday' => [
+                'initials' => 'Π',
+                'full' => 'Παρασκευή',
+            ],
+            'saturday' => [
+                'initials' => 'Σ',
+                'full' => 'Σάββατο',
+            ],
+        ]);
+
+        $this->setMonths([
+            'january' => 'Ιανουάριος',
+            'february' => 'Φεβρουάριος',
+            'march' => 'Μάρτιος',
+            'april' => 'Απρίλιος',
+            'may' => 'Μάϊος',
+            'june' => 'Ιούνιος',
+            'july' => 'Ιούλιος',
+            'august' => 'Αύγουστος',
+            'september' => 'Σεπτέμβριος',
+            'october' => 'Οκτώβριος',
+            'november' => 'Νοέμβριος',
+            'december' => 'Δεκέμβριος'
+        ]);
+
+        return $this;
+    }
+
     /**
      * Sets the array of month names. Useful when translating.
      *
