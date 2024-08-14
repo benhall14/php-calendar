@@ -1039,7 +1039,8 @@ class Calendar
 
                 $calendar .= '</td>';
             }
-            echo '<tr/>';
+
+            $calendar .= '<tr/>';
         }
 
         $calendar .= '</tbody>';
