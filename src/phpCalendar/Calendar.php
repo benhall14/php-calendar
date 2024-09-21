@@ -874,7 +874,7 @@ class Calendar
      * @param string $end_time
      * @param integer $minutes
      *
-     * @return void
+     * @return static
      */
     public function setTimeFormat($start_time = '00:00', $end_time = '00:00', $minutes = 30)
     {
