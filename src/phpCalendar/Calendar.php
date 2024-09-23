@@ -992,11 +992,7 @@ class Calendar
 
                 $datetime = $date->setTime(substr($time, 0, 2), substr($time, 3, 2));
 
-                $events = $this->findEvents($datetime, 'week');
-
-                $class = '';
-
-                $event_summary = '';
+                $events = $this->findEvents($datetime, 'week');    
 
                 $today_class = ($date->format('Y-m-d H') == $today->format('Y-m-d H')) ? ' today' : '';
 
@@ -1006,6 +1002,11 @@ class Calendar
 
                 if ($events) {
                     foreach ($events as $index => $event) {
+                        
+                        $class = '';
+                        
+                        $event_summary = '';
+                        
                         if (in_array($event, $used_events)) {
                             $event_summary = '&nbsp;';
                         } else {
