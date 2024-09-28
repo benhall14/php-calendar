@@ -14,6 +14,7 @@ return RectorConfig::configure()
     ])
     ->withPhpSets(php80: true)
     ->withPreparedSets(
+        carbon: true,
         deadCode: true,
         codeQuality: true,
         codingStyle: true,
@@ -23,6 +24,7 @@ return RectorConfig::configure()
 //        instanceof: true,
         earlyReturn: true,
 //        strictBooleans: true,
+        rectorPreset: true
     )
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,

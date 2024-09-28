@@ -628,11 +628,11 @@ class Calendar
             $date = \DateTime::createFromFormat('Y-m-d', $date);
             $date->modify('first day of this month');
         } else {
-            $date = new \DateTime();
+            $date = \Carbon\Carbon::now();
             $date->modify('first day of this month');
         }
 
-        $today = new \DateTime();
+        $today = \Carbon\Carbon::now();
 
         $total_days_in_month = (int) $date->format('t');
 
@@ -821,7 +821,7 @@ class Calendar
             }
         }
 
-        $date = $date ? \DateTime::createFromFormat('Y-m-d', $date) : new \DateTime();
+        $date = $date ? \DateTime::createFromFormat('Y-m-d', $date) : \Carbon\Carbon::now();
 
         if (6 == $this->starting_day) {
             $date->modify('last sunday');
@@ -836,7 +836,7 @@ class Calendar
             $date->modify('+1 Day');
         } while (count($dates) < 7);
 
-        $today = new \DateTime();
+        $today = \Carbon\Carbon::now();
 
         $color = $color ?: '';
 
