@@ -13,11 +13,19 @@
         }
     ],
     "require": {
-        "php": ">=5.3"
+        "php": ">=8.0"
+    },
+    "scripts": {
+        "cs": "./vendor/bin/php-cs-fixer fix -vvv --show-progress=dots --config=ruleset-php_cs.php",
+        "rector": "./vendor/bin/rector process --config=rector.php"
     },
     "autoload": {
         "psr-4": {
-            "benhall14\\": "src/"
+            "benhall14\\phpCalendar\\": "src/"
         }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "rector/rector": "^1.2"
     }
 }
