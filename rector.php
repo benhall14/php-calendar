@@ -26,8 +26,11 @@ return RectorConfig::configure()
 //        strictBooleans: true,
         rectorPreset: true
     )
+    ->withImportNames(removeUnusedImports: true)
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
+
+
     ])
     ->withCache(
     // ensure file system caching is used instead of in-memory
