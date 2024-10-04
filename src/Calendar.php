@@ -62,14 +62,12 @@ class Calendar
     /**
      * The day strings. Default EN.
      */
-    private array $days = [
-    ];
+    private array $days = [];
 
     /**
      * The month names. Default EN.
      */
-    private array $months = [
-    ];
+    private array $months = [];
 
     /**
      * Table classes that should be injected into the table header.
@@ -403,9 +401,9 @@ class Calendar
     {
         if ('month' === $view) {
             // Extracting and comparing only the dates (Y-m-d) to avoid time-based exclusion
-            $callback = fn (Event $event): bool => $start->greaterThanOrEqualTo((clone $event->start)->startOfDay()) && $start->lessThanOrEqualTo((clone $event->end)->endOfDay());
+            $callback = fn(Event $event): bool => $start->greaterThanOrEqualTo((clone $event->start)->startOfDay()) && $start->lessThanOrEqualTo((clone $event->end)->endOfDay());
         } else {
-            $callback = fn (Event $event): bool => $event->start->betweenIncluded($start, $end)
+            $callback = fn(Event $event): bool => $event->start->betweenIncluded($start, $end)
                 || $event->end->betweenIncluded($start, $end)
                 || $end->betweenIncluded($event->start, $event->end);
         }
@@ -426,7 +424,7 @@ class Calendar
         foreach ($days as $day) {
             if (in_array($day, $this->hiddenDays)) {
                 --$colspan;
-                $calendar .= '<style>.cal-day-'.$day.'{display:none!important;}</style>';
+                $calendar .= '<style>.cal-th-' . $day . ',.cal-day-' . $day . '{display:none!important;}</style>';
             }
         }
 
@@ -436,15 +434,15 @@ class Calendar
 
         $color = $color ?: '';
 
-        $calendar .= '<table class="calendar '.$color.' '.implode(' ', $this->table_classes).'">';
+        $calendar .= '<table class="calendar ' . $color . ' ' . implode(' ', $this->table_classes) . '">';
 
         $calendar .= '<thead>';
 
         $calendar .= '<tr class="calendar-title">';
 
-        $calendar .= '<th colspan="'.$colspan.'">';
+        $calendar .= '<th colspan="' . $colspan . '">';
 
-        $calendar .= $this->months[strtolower($date->englishMonth)].' '.$date->year;
+        $calendar .= $this->months[strtolower($date->englishMonth)] . ' ' . $date->year;
 
         $calendar .= '</th>';
 
@@ -453,7 +451,7 @@ class Calendar
         $calendar .= '<tr class="calendar-header">';
 
         foreach ($this->getDays() as $index => $day) {
-            $calendar .= '<th class="cal-th cal-th-'.$index.'">'.('full' === $this->day_format ? $day['full'] : $day['initials']).'</th>';
+            $calendar .= '<th class="cal-th cal-th-' . $index . '">' . ('full' === $this->day_format ? $day['full'] : $day['initials']) . '</th>';
         }
 
         $calendar .= '</tr>';
@@ -463,11 +461,11 @@ class Calendar
         $calendar .= '<tbody>';
 
         $week = 1;
-        $calendar .= '<tr class="cal-week-'.$week.'">';
+        $calendar .= '<tr class="cal-week-' . $week . '">';
 
         // padding before the month start date IE. if the month starts on Wednesday
         for ($x = 0; $x < $date->dayOfWeek; ++$x) {
-            $calendar .= '<td class="pad cal-'.$days[$x].'"> </td>';
+            $calendar .= '<td class="pad cal-' . $days[$x] . '"> </td>';
         }
 
         $running_day = clone $date;
@@ -485,17 +483,17 @@ class Calendar
                 // is the current day the start of the event
                 if ($event->start->isSameDay($running_day)) {
                     $class .= $event->mask ? ' mask-start' : '';
-                    $class .= ($event->classes) ? ' '.$event->classes : '';
-                    $event_summary .= ($event->summary) ? '<span class="event-summary-row '.$event->box_classes.'">'.$event->summary.'</span>' : '';
+                    $class .= ($event->classes) ? ' ' . $event->classes : '';
+                    $event_summary .= ($event->summary) ? '<span class="event-summary-row ' . $event->box_classes . '">' . $event->summary . '</span>' : '';
 
-                // is the current day in between the start and end of the event
+                    // is the current day in between the start and end of the event
                 } elseif (
                     $running_day->getTimestamp() > $event->start->getTimestamp()
                     && $running_day->getTimestamp() < $event->end->getTimestamp()
                 ) {
                     $class .= $event->mask ? ' mask' : '';
 
-                // is the current day the start of the event
+                    // is the current day the start of the event
                 } elseif ($running_day->isSameDay($event->end)) {
                     $class .= $event->mask ? ' mask-end' : '';
                 }
@@ -503,7 +501,7 @@ class Calendar
 
             $today_class = $running_day->isToday() ? ' today' : '';
 
-            $dayRender = '<td class="day cal-day cal-day-'.strtolower($running_day->englishDayOfWeek).' '.$class.$today_class.'" title="'.htmlentities(strip_tags($event_summary)).'">';
+            $dayRender = '<td class="day cal-day cal-day-' . strtolower($running_day->englishDayOfWeek) . ' ' . $class . $today_class . '" title="' . htmlentities(strip_tags($event_summary)) . '">';
 
             $dayRender .= '<div class="cal-day-box">';
 
@@ -526,7 +524,7 @@ class Calendar
                 // start a new calendar row if there are still days left in the month
                 if (($running_day_count + 1) <= $total_days_in_month) {
                     ++$week;
-                    $calendar .= '<tr class="cal-week-'.$week.'">';
+                    $calendar .= '<tr class="cal-week-' . $week . '">';
                 }
 
                 // reset padding because its a new calendar row
@@ -553,7 +551,7 @@ class Calendar
                     $offset = 0;
                 }
 
-                $calendar .= '<td class="pad cal-'.$days[$offset].'"> </td>';
+                $calendar .= '<td class="pad cal-' . $days[$offset] . '"> </td>';
             }
         }
 
@@ -561,7 +559,7 @@ class Calendar
 
         $calendar .= '</tbody>';
 
-        return $calendar.'</table>';
+        return $calendar . '</table>';
     }
 
     /**
@@ -611,7 +609,7 @@ class Calendar
         foreach ($days as $day) {
             if (in_array($day, $this->hiddenDays)) {
                 --$colspan;
-                $calendar .= '<style>.cal-day-'.$day.'{display:none!important;}</style>';
+                $calendar .= '<style>.cal-' . $day . ',.cal-day-' . $day . '{display:none!important;}</style>';
             }
         }
 
@@ -634,7 +632,7 @@ class Calendar
 
         $color = $color ?: '';
 
-        $calendar .= '<table class="weekly-calendar calendar '.$color.' '.implode(' ', $this->table_classes).'">';
+        $calendar .= '<table class="weekly-calendar calendar ' . $color . ' ' . implode(' ', $this->table_classes) . '">';
 
         $calendar .= '<thead>';
 
@@ -644,10 +642,10 @@ class Calendar
 
         $days = $this->getDays();
         foreach ($dates as $date) {
-            $calendar .= '<th class="cal-th cal-th-'.strtolower($date->englishDayOfWeek).'">';
-            $calendar .= '<div class="cal-weekview-dow">'.$days[strtolower($date->englishDayOfWeek)]['full'].'</div>';
-            $calendar .= '<div class="cal-weekview-day">'.$date->day.'</div>';
-            $calendar .= '<div class="cal-weekview-month">'.$this->months[strtolower($date->englishMonth)].'</div>';
+            $calendar .= '<th class="cal-th cal-th-' . strtolower($date->englishDayOfWeek) . '">';
+            $calendar .= '<div class="cal-weekview-dow">' . $days[strtolower($date->englishDayOfWeek)]['full'] . '</div>';
+            $calendar .= '<div class="cal-weekview-day">' . $date->day . '</div>';
+            $calendar .= '<div class="cal-weekview-month">' . $this->months[strtolower($date->englishMonth)] . '</div>';
             $calendar .= '</th>';
         }
 
@@ -663,19 +661,22 @@ class Calendar
             $calendar .= '<tr>';
 
             $start_time = $time;
-            $end_time = date('H:i', strtotime($time.' + '.$this->time_interval.' minutes'));
+            $end_time = date('H:i', strtotime($time . ' + ' . $this->time_interval . ' minutes'));
 
-            $calendar .= '<td class="cal-weekview-time-th"><div>'.$start_time.' - '.$end_time.'</div></td>';
+            $calendar .= '<td class="cal-weekview-time-th"><div>' . $start_time . ' - ' . $end_time . '</div></td>';
 
             foreach ($dates as $date) {
                 $datetime = $date->setTime((int) substr($time, 0, 2), (int) substr($time, 3, 2));
 
-                $events = $this->findEvents(clone $datetime, (clone $datetime)->addMinutes($this->time_interval),
-                    'week');
+                $events = $this->findEvents(
+                    clone $datetime,
+                    (clone $datetime)->addMinutes($this->time_interval),
+                    'week'
+                );
 
                 $today_class = ($date->format('Y-m-d H') === $today->format('Y-m-d H')) ? ' today' : '';
 
-                $calendar .= '<td class="cal-weekview-time '.$today_class.'">';
+                $calendar .= '<td class="cal-weekview-time ' . $today_class . '">';
 
                 $calendar .= '<div>';
 
@@ -694,20 +695,20 @@ class Calendar
                     // is the current day the start of the event
                     if ($event->start->isSameDay($date)) {
                         $class .= $event->mask ? ' mask-start' : '';
-                        $class .= ($event->classes) ? ' '.$event->classes : '';
-                    // is the current day in between the start and end of the event
+                        $class .= ($event->classes) ? ' ' . $event->classes : '';
+                        // is the current day in between the start and end of the event
                     } elseif (
                         $date->getTimestamp() > $event->start->getTimestamp()
                         && $date->getTimestamp() < $event->end->getTimestamp()
                     ) {
                         $class .= $event->mask ? ' mask' : '';
 
-                    // is the current day the start of the event
+                        // is the current day the start of the event
                     } elseif ($date->isSameDay($event->end)) {
                         $class .= $event->mask ? ' mask-end' : '';
                     }
 
-                    $calendar .= '<div class="cal-weekview-event '.$class.'">';
+                    $calendar .= '<div class="cal-weekview-event ' . $class . '">';
                     $calendar .= $event_summary;
                     $calendar .= '</div>';
                 }
@@ -724,7 +725,7 @@ class Calendar
 
         $calendar .= '</table>';
 
-        return $calendar.'</div>';
+        return $calendar . '</div>';
     }
 
     /**
