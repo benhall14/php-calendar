@@ -432,8 +432,6 @@ class Calendar
 
         $date = Carbon::parse($date)->firstOfMonth();
 
-        $today = Carbon::now();
-
         $total_days_in_month = $date->daysInMonth();
 
         $color = $color ?: '';
@@ -446,7 +444,7 @@ class Calendar
 
         $calendar .= '<th colspan="'.$colspan.'">';
 
-        $calendar .= $this->months[strtolower($date->format('F'))].' '.$date->format('Y');
+        $calendar .= $this->months[strtolower($date->englishMonth)].' '.$date->year;
 
         $calendar .= '</th>';
 
@@ -485,7 +483,7 @@ class Calendar
 
             foreach ($events as $event) {
                 // is the current day the start of the event
-                if ($event->start->format('Y-m-d') == $running_day->format('Y-m-d')) {
+                if ($event->start->isSameDay($running_day)) {
                     $class .= $event->mask ? ' mask-start' : '';
                     $class .= ($event->classes) ? ' '.$event->classes : '';
                     $event_summary .= ($event->summary) ? '<span class="event-summary-row '.$event->box_classes.'">'.$event->summary.'</span>' : '';
@@ -498,7 +496,7 @@ class Calendar
                     $class .= $event->mask ? ' mask' : '';
 
                 // is the current day the start of the event
-                } elseif ($running_day->format('Y-m-d') == $event->end->format('Y-m-d')) {
+                } elseif ($running_day->isSameDay($event->end)) {
                     $class .= $event->mask ? ' mask-end' : '';
                 }
             }
@@ -542,15 +540,15 @@ class Calendar
         } while ($running_day_count <= $total_days_in_month);
 
         if (0 == $this->starting_day) {
-            $padding_at_end_of_month = 7 - $running_day->format('w');
+            $padding_at_end_of_month = 7 - $running_day->dayOfWeek;
         } else {
-            $padding_at_end_of_month = (0 == $running_day->format('w')) ? 1 : 7 - ($running_day->format('w') - 1);
+            $padding_at_end_of_month = (0 == $running_day->dayOfWeek) ? 1 : 7 - ($running_day->dayOfWeek - 1);
         }
 
         // padding at the end of the month
         if ($padding_at_end_of_month && $padding_at_end_of_month < 7) {
             for ($x = 1; $x <= $padding_at_end_of_month; ++$x) {
-                $offset = (($x - 1) + (int) $running_day->format('w'));
+                $offset = (($x - 1) + $running_day->dayOfWeek);
                 if (7 == $offset) {
                     $offset = 0;
                 }
@@ -617,7 +615,7 @@ class Calendar
             }
         }
 
-        $date = Carbon::parse($date) ;
+        $date = Carbon::parse($date);
 
         if (0 == $this->starting_day) {
             $date->modify('last sunday');
@@ -646,10 +644,10 @@ class Calendar
 
         $days = $this->getDays();
         foreach ($dates as $date) {
-            $calendar .= '<th class="cal-th cal-th-'.strtolower($date->format('l')).'">';
-            $calendar .= '<div class="cal-weekview-dow">'.$days[strtolower($date->format('l'))]['full'].'</div>';
-            $calendar .= '<div class="cal-weekview-day">'.$date->format('j').'</div>';
-            $calendar .= '<div class="cal-weekview-month">'.$this->months[strtolower($date->format('F'))].'</div>';
+            $calendar .= '<th class="cal-th cal-th-'.strtolower($date->englishDayOfWeek).'">';
+            $calendar .= '<div class="cal-weekview-dow">'.$days[strtolower($date->englishDayOfWeek)]['full'].'</div>';
+            $calendar .= '<div class="cal-weekview-day">'.$date->day.'</div>';
+            $calendar .= '<div class="cal-weekview-month">'.$this->months[strtolower($date->englishMonth)].'</div>';
             $calendar .= '</th>';
         }
 
@@ -674,7 +672,7 @@ class Calendar
 
                 $events = $this->findEvents($datetime, 'week');
 
-                $today_class = ($date->format('Y-m-d H') == $today->format('Y-m-d H')) ? ' today' : '';
+                $today_class = ($date->format('Y-m-d H') === $today->format('Y-m-d H')) ? ' today' : '';
 
                 $calendar .= '<td class="cal-weekview-time '.$today_class.'">';
 
@@ -686,14 +684,14 @@ class Calendar
                     $event_summary = '';
 
                     if (in_array($event, $used_events)) {
-                        $event_summary = '&nbsp;';
+                        $event_summary .= '&nbsp;';
                     } else {
-                        $event_summary = ($event->summary) ?: '';
+                        $event_summary .= ($event->summary) ?: '';
                         $used_events[] = $event;
                     }
 
                     // is the current day the start of the event
-                    if ($event->start->format('Y-m-d') == $date->format('Y-m-d')) {
+                    if ($event->start->isSameDay($date)) {
                         $class .= $event->mask ? ' mask-start' : '';
                         $class .= ($event->classes) ? ' '.$event->classes : '';
                     // is the current day in between the start and end of the event
@@ -704,7 +702,7 @@ class Calendar
                         $class .= $event->mask ? ' mask' : '';
 
                     // is the current day the start of the event
-                    } elseif ($date->format('Y-m-d') == $event->end->format('Y-m-d')) {
+                    } elseif ($date->isSameDay($event->end)) {
                         $class .= $event->mask ? ' mask-end' : '';
                     }
 
