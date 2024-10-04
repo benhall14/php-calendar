@@ -395,22 +395,22 @@ class Calendar
     /**
      * Find an event from the internal pool.
      *
-     * @param \DateTime $date the date to match an event for
      * @param string $view The type of view - either Week or Month
      *
      * @return array<Event> either an array of events or false
      */
-    private function findEvents(\DateTime $date, string $view = 'month'): array
+    private function findEvents(Carbon $start, Carbon $end, string $view = 'month'): array
     {
-        $date = Carbon::parse($date);
         if ('month' === $view) {
             // Extracting and comparing only the dates (Y-m-d) to avoid time-based exclusion
-            $date = $date->startOfDay();
+            $callback = fn (Event $event): bool => $start->greaterThanOrEqualTo((clone $event->start)->startOfDay()) && $start->lessThanOrEqualTo((clone $event->end)->endOfDay());
+        } else {
+            $callback = fn (Event $event): bool => $event->start->betweenIncluded($start, $end)
+                || $event->end->betweenIncluded($start, $end)
+                || $end->betweenIncluded($event->start, $event->end);
         }
 
-        return array_filter($this->events,
-            fn (Event $event,
-            ): bool => $date->greaterThanOrEqualTo($event->start) && $date->lessThanOrEqualTo($event->end));
+        return array_filter($this->events, $callback);
     }
 
     /**
@@ -475,7 +475,7 @@ class Calendar
         $running_day_count = 1;
 
         do {
-            $events = $this->findEvents($running_day, 'month');
+            $events = $this->findEvents((clone $running_day)->startOfDay(), (clone $running_day)->endOfDay(), 'month');
 
             $class = '';
 
@@ -670,7 +670,8 @@ class Calendar
             foreach ($dates as $date) {
                 $datetime = $date->setTime((int) substr($time, 0, 2), (int) substr($time, 3, 2));
 
-                $events = $this->findEvents($datetime, 'week');
+                $events = $this->findEvents(clone $datetime, (clone $datetime)->addMinutes($this->time_interval),
+                    'week');
 
                 $today_class = ($date->format('Y-m-d H') === $today->format('Y-m-d H')) ? ' today' : '';
 

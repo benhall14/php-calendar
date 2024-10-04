@@ -9,7 +9,8 @@ $calendar = new Calendar();
 $calendar
     ->addEvent(date('Y-01-14'), date('Y-01-14'), 'My Birthday', true)
     ->addEvent(date('Y-12-25'), date('Y-12-25'), 'Christmas', true)
-    ->addEvent(date('Y-1-1 10:00'), date('Y-1-1 12:00'), 'Time Event', true);
+    ->addEvent(date('Y-1-1 10:00'), date('Y-1-1 12:00'), 'Time Event', true)
+    ->addEvent(date('Y-1-3 14:45'), date('Y-1-3 15:05'), 'Time Event 2', true);
 
 #   or
 /*
