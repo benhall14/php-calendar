@@ -1,6 +1,6 @@
 <?php
 
-require('../src/phpCalendar/Calendar.php');
+require('../vendor/autoload.php');
 
 use benhall14\phpCalendar\Calendar;
 
@@ -9,7 +9,8 @@ $calendar = new Calendar();
 $calendar
     ->addEvent(date('Y-01-14'), date('Y-01-14'), 'My Birthday', true)
     ->addEvent(date('Y-12-25'), date('Y-12-25'), 'Christmas', true)
-    ->addEvent(date('Y-1-1 10:00'), date('Y-1-1 12:00'), 'Time Event', true);
+    ->addEvent(date('Y-1-1 10:00'), date('Y-1-1 12:00'), 'Time Event', true)
+    ->addEvent(date('Y-1-3 14:45'), date('Y-1-3 15:05'), 'Time Event 2', true);
 
 #   or
 /*
@@ -84,7 +85,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->draw(date('Y-2-1'), 'pink'); ?>
+                <?php echo $calendar->setLocale('it')->draw(date('Y-2-1'), 'pink'); ?>
 
                 <hr />
 
@@ -92,7 +93,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->draw(date('Y-3-1'), 'blue'); ?>
+                <?php echo $calendar->setLocale('fr')->draw(date('Y-3-1'), 'blue'); ?>
 
                 <hr />
 
@@ -100,7 +101,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->draw(date('Y-4-1'), 'orange'); ?>
+                <?php echo $calendar->setLocale('es')->draw(date('Y-4-1'), 'orange'); ?>
 
                 <hr />
 
@@ -108,15 +109,14 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->draw(date('Y-5-1'), 'purple'); ?>
-
+                <?php echo $calendar->setLocale('el')->draw(date('Y-5-1'), 'purple'); ?>
                 <hr />
 
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->draw(date('Y-6-1'), 'yellow'); ?>
+                <?php echo $calendar->setLocale('en')->draw(date('Y-6-1'), 'yellow'); ?>
 
                 <hr />
 
@@ -188,7 +188,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12">
 
-                <?php echo $calendar->useWeekView()->draw(date('Y-12-25'), 'green'); ?>
+                <?php echo $calendar->useWeekView()->setLocale('fr')->draw(date('Y-12-25'), 'green'); ?>
 
             </div>
 
