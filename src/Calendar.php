@@ -467,17 +467,8 @@ class Calendar
         $week = 1;
         $calendar .= '<tr class="cal-week-'.$week.'">';
 
-        // account for a monday start, if set.
-        $weekday = 1 !== $this->starting_day
-            ? ($date->format('w'))
-            : (
-                (0 == $date->format('w'))
-                    ? 1
-                    : $date->format('w') - 1
-            );
-
         // padding before the month start date IE. if the month starts on Wednesday
-        for ($x = 0; $x < $weekday; ++$x) {
+        for ($x = 0; $x < $date->dayOfWeek; ++$x) {
             $calendar .= '<td class="pad cal-'.$days[$x].'"> </td>';
         }
 
@@ -512,26 +503,26 @@ class Calendar
                 }
             }
 
-            $today_class = ($running_day->format('Y-m-d') == $today->format('Y-m-d')) ? ' today' : '';
+            $today_class = $running_day->isToday() ? ' today' : '';
 
-            $calendar .= '<td class="day cal-day cal-day-'.strtolower($running_day->format('l')).' '.$class.$today_class.'" title="'.htmlentities(strip_tags($event_summary)).'">';
+            $dayRender = '<td class="day cal-day cal-day-'.strtolower($running_day->englishDayOfWeek).' '.$class.$today_class.'" title="'.htmlentities(strip_tags($event_summary)).'">';
 
-            $calendar .= '<div class="cal-day-box">';
+            $dayRender .= '<div class="cal-day-box">';
 
-            $calendar .= $running_day->format('j');
+            $dayRender .= $running_day->day;
 
-            $calendar .= '</div>';
+            $dayRender .= '</div>';
 
-            $calendar .= '<div class="cal-event-box">';
+            $dayRender .= '<div class="cal-event-box">';
 
-            $calendar .= $event_summary;
+            $dayRender .= $event_summary;
 
-            $calendar .= '</div>';
+            $dayRender .= '</div>';
 
-            $calendar .= '</td>';
+            $dayRender .= '</td>';
 
             // check if this calendar-row is full and if so push to a new calendar row
-            if ($running_day->format('w') == $this->starting_day) {
+            if ($running_day->dayOfWeek == $this->starting_day) {
                 $calendar .= '</tr>';
 
                 // start a new calendar row if there are still days left in the month
@@ -544,7 +535,8 @@ class Calendar
                 $day_padding_offset = 0;
             }
 
-            $running_day->modify('+1 Day');
+            $calendar .= $dayRender;
+            $running_day->addDay();
 
             ++$running_day_count;
         } while ($running_day_count <= $total_days_in_month);
