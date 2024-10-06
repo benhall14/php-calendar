@@ -17,7 +17,7 @@ class Event
         public Carbon $end,
         public string $summary = '',
         public bool $mask = false,
-        string|array $classes = [],
+        string|array $classes = '',
         string|array $box_classes = [],
     ) {
         $this->classes = is_array($classes) ? implode(' ', $classes) : $classes;

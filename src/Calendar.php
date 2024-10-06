@@ -16,6 +16,14 @@ use Carbon\CarbonInterval;
  * @version 1.2
  *
  * @author Benjamin Hall <https://conobe.co.uk>
+ *
+ * @method $this hideSundays()
+ * @method $this hideMondays()
+ * @method $this hideTuesdays()
+ * @method $this hideWednesdays()
+ * @method $this hideThursdays()
+ * @method $this hideFridays()
+ * @method $this hideSaturdays()
  */
 class Calendar
 {
@@ -60,41 +68,30 @@ class Calendar
     private int $starting_day = 0;
 
     /**
-     * The day strings. Default EN.
+     *  The day strings. Default EN.
+     *
+     * @var array<string, array{dow:int, initials: string, full:string}>
      */
     private array $days = [];
 
     /**
      * The month names. Default EN.
+     *
+     * @var array<string, string>
      */
     private array $months = [];
 
     /**
      * Table classes that should be injected into the table header.
      */
-    private array $table_classes = [];
+    private string $table_classes = '';
 
     /**
      * Hide all days from the calendar view.
+     *
+     * @var list<string>
      */
     private array $hiddenDays = [];
-
-    /**
-     * Sets the array of days. Useful when translating.
-     */
-    public function setDays(array $days): static
-    {
-        if (7 == count($days)) {
-            foreach ($days as $day => $data) {
-                if (isset($data['initials']) && isset($data['full'])) {
-                    $this->days[$day]['initials'] = $data['initials'];
-                    $this->days[$day]['full'] = $data['full'];
-                }
-            }
-        }
-
-        return $this;
-    }
 
     public function setLocale(string $locale): static
     {
@@ -127,6 +124,23 @@ class Calendar
     }
 
     /**
+     * Sets the array of days. Useful when translating.
+     */
+    public function setDays(array $days): static
+    {
+        if (7 == count($days)) {
+            foreach ($days as $day => $data) {
+                if (isset($data['initials']) && isset($data['full'])) {
+                    $this->days[$day]['initials'] = $data['initials'];
+                    $this->days[$day]['full'] = $data['full'];
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Sets the array of month names. Useful when translating.
      */
     public function setMonths(array $months): static
@@ -138,74 +152,15 @@ class Calendar
         return $this;
     }
 
-    /**
-     * Hide Sundays.
-     */
-    public function hideSundays(): static
+    public function __call(string $method, $args): static
     {
-        $this->hiddenDays[] = 'sunday';
+        if (str_starts_with($method, 'hide')) {
+            $this->hiddenDays[] = strtolower(rtrim(ltrim($method, 'hide'), 's'));
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Hide Mondays.
-     */
-    public function hideMondays(): static
-    {
-        $this->hiddenDays[] = 'monday';
-
-        return $this;
-    }
-
-    /**
-     * Hide Tuesdays.
-     */
-    public function hideTuesdays(): static
-    {
-        $this->hiddenDays[] = 'tuesday';
-
-        return $this;
-    }
-
-    /**
-     * Hide Wednesdays.
-     */
-    public function hideWednesdays(): static
-    {
-        $this->hiddenDays[] = 'wednesday';
-
-        return $this;
-    }
-
-    /**
-     * Hide Thursdays.
-     */
-    public function hideThursdays(): static
-    {
-        $this->hiddenDays[] = 'thursday';
-
-        return $this;
-    }
-
-    /**
-     * Hide Fridays.
-     */
-    public function hideFridays(): static
-    {
-        $this->hiddenDays[] = 'friday';
-
-        return $this;
-    }
-
-    /**
-     * Hide Saturdays.
-     */
-    public function hideSaturdays(): static
-    {
-        $this->hiddenDays[] = 'saturday';
-
-        return $this;
+        throw new \BadMethodCallException(sprintf('Method "%s" does not exist.', $method));
     }
 
     /**
@@ -365,11 +320,9 @@ class Calendar
      */
     public function addTableClasses(string|array $classes): static
     {
-        $classes = is_string($classes) ? explode(' ', $classes) : $classes;
+        $classes = is_array($classes) ? implode(' ', $classes) : $classes;
 
-        foreach ($classes as $class) {
-            $this->table_classes[] = $class;
-        }
+        $this->table_classes = $classes;
 
         return $this;
     }
@@ -414,7 +367,7 @@ class Calendar
     /**
      * Returns the calendar as a month view.
      */
-    public function asMonthView(?string $date = null, ?string $color = null): string
+    public function asMonthView(\DateTimeInterface|string|null $startDate = null, string $color = ''): string
     {
         $calendar = '';
 
@@ -428,13 +381,11 @@ class Calendar
             }
         }
 
-        $date = Carbon::parse($date)->firstOfMonth();
+        $date = Carbon::parse($startDate)->firstOfMonth();
 
         $total_days_in_month = $date->daysInMonth();
 
-        $color = $color ?: '';
-
-        $calendar .= '<table class="calendar ' . $color . ' ' . implode(' ', $this->table_classes) . '">';
+        $calendar .= sprintf('<table class="calendar  %s %s ">', $color, $this->table_classes);
 
         $calendar .= '<thead>';
 
@@ -576,6 +527,8 @@ class Calendar
 
     /**
      * Get an array of time slots.
+     *
+     * @return list<string>
      */
     public function getTimes(): array
     {
@@ -598,7 +551,7 @@ class Calendar
     /**
      * Returns the calendar output as a week view.
      */
-    public function asWeekView(?string $date = null, ?string $color = null): string
+    public function asWeekView(\DateTimeInterface|string|null $startDate = null, string $color = ''): string
     {
         $calendar = '<div class="weekly-calendar-container">';
 
@@ -606,14 +559,12 @@ class Calendar
 
         $days = array_keys($this->days);
 
-        foreach ($days as $day) {
-            if (in_array($day, $this->hiddenDays)) {
+        foreach (array_intersect($this->hiddenDays, $days) as $day) {
                 --$colspan;
                 $calendar .= '<style>.cal-' . $day . ',.cal-day-' . $day . '{display:none!important;}</style>';
-            }
         }
 
-        $date = Carbon::parse($date);
+        $date = Carbon::parse($startDate);
 
         if (0 == $this->starting_day) {
             $date->modify('last sunday');
@@ -632,7 +583,7 @@ class Calendar
 
         $color = $color ?: '';
 
-        $calendar .= '<table class="weekly-calendar calendar ' . $color . ' ' . implode(' ', $this->table_classes) . '">';
+        $calendar .= '<table class="weekly-calendar calendar ' . $color . ' ' . $this->table_classes . '">';
 
         $calendar .= '<thead>';
 
@@ -735,7 +686,7 @@ class Calendar
      *
      * @return string The calendar
      */
-    public function draw(\DateTimeInterface|string|null $date = null, ?string $color = null): string
+    public function draw(\DateTimeInterface|string|null $date = null, string $color = ''): string
     {
         return 'week' === $this->type ? $this->asWeekView($date, $color) : $this->asMonthView($date, $color);
     }
@@ -743,7 +694,7 @@ class Calendar
     /**
      * Shortcut helper to print the calendar output.
      */
-    public function display(string|\DateTimeInterface|null $date = null, ?string $color = null): void
+    public function display(string|\DateTimeInterface|null $date = null, string $color = ''): void
     {
         echo $this->stylesheet();
         echo $this->draw($date, $color);
