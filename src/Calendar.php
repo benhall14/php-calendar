@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace benhall14\phpCalendar;
 
+use BadMethodCallException;
+use DateTimeInterface;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 
@@ -28,11 +30,6 @@ use Carbon\CarbonInterval;
 class Calendar
 {
     private string $locale = 'en_US';
-
-    public function __construct()
-    {
-        $this->setLocale($this->locale);
-    }
 
     /**
      * Calendar Type.
@@ -68,20 +65,6 @@ class Calendar
     private int $starting_day = 0;
 
     /**
-     *  The day strings. Default EN.
-     *
-     * @var array<string, array{dow:int, initials: string, full:string}>
-     */
-    private array $days = [];
-
-    /**
-     * The month names. Default EN.
-     *
-     * @var array<string, string>
-     */
-    private array $months = [];
-
-    /**
      * Table classes that should be injected into the table header.
      */
     private string $table_classes = '';
@@ -97,70 +80,23 @@ class Calendar
     {
         $this->locale = $locale;
 
-        $intervals = CarbonInterval::month()->toPeriod(Carbon::now()->startOfYear(), Carbon::now()->endOfYear());
-        $monthNames = array_reduce($intervals->toArray(), function (?array $months, Carbon $carbon) {
-            $months[strtolower($carbon->monthName)] = $carbon->locale($this->locale)->monthName;
-
-            return $months;
-        });
-
-        $startDay = Carbon::now()->startOfWeek($this->starting_day);
-        $intervals = CarbonInterval::day()->toPeriod($startDay, $startDay->clone()->addDays(7));
-        $dayNames = array_reduce($intervals->toArray(), function (?array $days, Carbon $carbon) {
-            $day = $carbon->clone()->locale($this->locale)->dayName;
-            $days[strtolower($carbon->dayName)] = [
-                'dow' => $carbon->dayOfWeek,
-                'initials' => mb_str_split($day)[0],
-                'full' => $day,
-            ];
-
-            return $days;
-        });
-
-        $this->setDays($dayNames);
-        $this->setMonths($monthNames);
-
         return $this;
     }
 
     /**
-     * Sets the array of days. Useful when translating.
+     * @param array<string,mixed> $args
+     *
+     * @return $this
      */
-    public function setDays(array $days): static
-    {
-        if (7 == count($days)) {
-            foreach ($days as $day => $data) {
-                if (isset($data['initials']) && isset($data['full'])) {
-                    $this->days[$day]['initials'] = $data['initials'];
-                    $this->days[$day]['full'] = $data['full'];
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets the array of month names. Useful when translating.
-     */
-    public function setMonths(array $months): static
-    {
-        if (12 == count($months)) {
-            $this->months = array_merge($this->months, $months);
-        }
-
-        return $this;
-    }
-
-    public function __call(string $method, $args): static
+    public function __call(string $method, array $args): static
     {
         if (str_starts_with($method, 'hide')) {
-            $this->hiddenDays[] = strtolower(rtrim(ltrim($method, 'hide'), 's'));
+            $this->hiddenDays[] = rtrim(ltrim($method, 'hide'), 's');
 
             return $this;
         }
 
-        throw new \BadMethodCallException(sprintf('Method "%s" does not exist.', $method));
+        throw new BadMethodCallException(sprintf('Method "%s" does not exist.', $method));
     }
 
     /**
@@ -230,16 +166,16 @@ class Calendar
     /**
      * Add an event to the current calendar instantiation.
      *
-     * @param string|\DateTimeInterface $start the start date in Y-m-d format
-     * @param string|\DateTimeInterface $end the end date in Y-m-d format
+     * @param string|DateTimeInterface $start the start date in Y-m-d format
+     * @param string|DateTimeInterface $end the end date in Y-m-d format
      * @param string $summary the summary string of the event
      * @param bool $mask the masking class
-     * @param mixed $classes (optional) A list of classes to use for the event
-     * @param mixed $box_classes (optional) A list of classes to apply to the event summary box
+     * @param string|list<string> $classes (optional) A list of classes to use for the event
+     * @param string|list<string> $box_classes (optional) A list of classes to apply to the event summary box
      */
     public function addEvent(
-        string|\DateTimeInterface $start,
-        string|\DateTimeInterface $end,
+        string|DateTimeInterface $start,
+        string|DateTimeInterface $end,
         string $summary = '',
         bool $mask = false,
         string|array $classes = [],
@@ -266,18 +202,16 @@ class Calendar
      *     (optional) 'mask' => a masking class name.
      *     (optional) 'classes' => custom classes to include.
      *
-     * @param array $events the events array
+     * @param array<int, array{start: (string | DateTimeInterface), end: (string | DateTimeInterface), summary?: string, classes?: (string | list<string>), mask?: bool, event_box_classes?: (string | list<string>)}> $events the events array
      */
     public function addEvents(array $events): static
     {
         foreach ($events as $event) {
-            if (isset($event['start']) && isset($event['end'])) {
-                $classes = $event['classes'] ?? [];
-                $mask = (bool) ($event['mask'] ?? false);
-                $summary = $event['summary'] ?? '';
-                $box_classes = $event['event_box_classes'] ?? [];
-                $this->addEvent($event['start'], $event['end'], $summary, $mask, $classes, $box_classes);
-            }
+            $classes = $event['classes'] ?? '';
+            $mask = (bool) ($event['mask'] ?? false);
+            $summary = $event['summary'] ?? '';
+            $box_classes = $event['event_box_classes'] ?? '';
+            $this->addEvent($event['start'], $event['end'], $summary, $mask, $classes, $box_classes);
         }
 
         return $this;
@@ -314,9 +248,11 @@ class Calendar
     }
 
     /**
-     * Add any custom table classes that should be injected into the calender table header.
+     * Add any custom table classes that should be injected into the calendar table header.
      *
      * This can be a space separated list, or an array of classes.
+     *
+     * @param string|list<string> $classes
      */
     public function addTableClasses(string|array $classes): static
     {
@@ -325,22 +261,6 @@ class Calendar
         $this->table_classes = $classes;
 
         return $this;
-    }
-
-    /**
-     * Returns an array of days to loop over.
-     */
-    public function getDays(): array
-    {
-        $array = $this->days;
-
-        if (1 == $this->starting_day) {
-            $key = array_key_first($array);
-            $first = array_shift($array);
-            $array[$key] = $first;
-        }
-
-        return $array;
     }
 
     /**
@@ -354,9 +274,9 @@ class Calendar
     {
         if ('month' === $view) {
             // Extracting and comparing only the dates (Y-m-d) to avoid time-based exclusion
-            $callback = fn(Event $event): bool => $start->greaterThanOrEqualTo((clone $event->start)->startOfDay()) && $start->lessThanOrEqualTo((clone $event->end)->endOfDay());
+            $callback = fn (Event $event): bool => $start->greaterThanOrEqualTo((clone $event->start)->startOfDay()) && $start->lessThanOrEqualTo((clone $event->end)->endOfDay());
         } else {
-            $callback = fn(Event $event): bool => $event->start->betweenIncluded($start, $end)
+            $callback = fn (Event $event): bool => $event->start->betweenIncluded($start, $end)
                 || $event->end->betweenIncluded($start, $end)
                 || $end->betweenIncluded($event->start, $event->end);
         }
@@ -367,23 +287,20 @@ class Calendar
     /**
      * Returns the calendar as a month view.
      */
-    public function asMonthView(\DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function asMonthView(DateTimeInterface|string|null $startDate = null, string $color = ''): string
     {
         $calendar = '';
 
         $colspan = 7;
 
-        $days = array_keys($this->days);
-        foreach ($days as $day) {
-            if (in_array($day, $this->hiddenDays)) {
-                --$colspan;
-                $calendar .= '<style>.cal-th-' . $day . ',.cal-day-' . $day . '{display:none!important;}</style>';
-            }
+        foreach (array_intersect($this->hiddenDays, Carbon::getDays()) as $day) {
+            --$colspan;
+            $calendar .= '<style>.cal-th-'.strtolower($day).',.cal-day-'.strtolower($day).'{display:none!important;}</style>';
         }
 
-        $date = Carbon::parse($startDate)->firstOfMonth();
+        $startDate = Carbon::parse($startDate)->firstOfMonth();
 
-        $total_days_in_month = $date->daysInMonth();
+        $total_days_in_month = $startDate->daysInMonth();
 
         $calendar .= sprintf('<table class="calendar  %s %s ">', $color, $this->table_classes);
 
@@ -391,18 +308,19 @@ class Calendar
 
         $calendar .= '<tr class="calendar-title">';
 
-        $calendar .= '<th colspan="' . $colspan . '">';
+        $calendar .= '<th colspan="'.$colspan.'">';
 
-        $calendar .= $this->months[strtolower($date->englishMonth)] . ' ' . $date->year;
+        $calendar .= ucfirst($startDate->locale($this->locale)->monthName).' '.$startDate->year;
 
         $calendar .= '</th>';
 
         $calendar .= '</tr>';
-
         $calendar .= '<tr class="calendar-header">';
 
-        foreach ($this->getDays() as $index => $day) {
-            $calendar .= '<th class="cal-th cal-th-' . $index . '">' . ('full' === $this->day_format ? $day['full'] : $day['initials']) . '</th>';
+        $carbonPeriod = Carbon::now()->locale($this->locale)->startOfWeek($this->starting_day)->toPeriod(7);
+        /** @var Carbon $day */
+        foreach ($carbonPeriod as $day) {
+            $calendar .= '<th class="cal-th cal-th-'.strtolower($day->englishDayOfWeek).'">'.ucfirst('full' === $this->day_format ? $day->dayName : $day->minDayName).'</th>';
         }
 
         $calendar .= '</tr>';
@@ -412,47 +330,43 @@ class Calendar
         $calendar .= '<tbody>';
 
         $week = 1;
-        $calendar .= '<tr class="cal-week-' . $week . '">';
+        $calendar .= '<tr class="cal-week-'.$week.'">';
 
         // padding before the month start date IE. if the month starts on Wednesday
-        for ($x = 0; $x < $date->dayOfWeek; ++$x) {
-            $calendar .= '<td class="pad cal-' . $days[$x] . '"> </td>';
+        for ($x = 0; $x < $startDate->dayOfWeek; ++$x) {
+            $calendar .= '<td class="pad cal-'.strtolower(Carbon::now()->dayOfWeek($x)->englishDayOfWeek).'"> </td>';
         }
 
-        $running_day = clone $date;
+        $running_day = $startDate->clone();
 
         $running_day_count = 1;
 
         do {
             $events = $this->findEvents((clone $running_day)->startOfDay(), (clone $running_day)->endOfDay(), 'month');
 
-            $class = '';
+            $classes = '';
 
             $event_summary = '';
+            $today_class = $running_day->isToday() ? ' today' : '';
 
             foreach ($events as $event) {
                 // is the current day the start of the event
                 if ($event->start->isSameDay($running_day)) {
-                    $class .= $event->mask ? ' mask-start' : '';
-                    $class .= ($event->classes) ? ' ' . $event->classes : '';
-                    $event_summary .= ($event->summary) ? '<span class="event-summary-row ' . $event->box_classes . '">' . $event->summary . '</span>' : '';
+                    $classes .= $event->mask ? ' mask-start' : '';
+                    $classes .= $event->classes;
+                    $event_summary .= ($event->summary) ? '<span class="event-summary-row '.$event->box_classes.'">'.$event->summary.'</span>' : '';
 
-                    // is the current day in between the start and end of the event
-                } elseif (
-                    $running_day->getTimestamp() > $event->start->getTimestamp()
-                    && $running_day->getTimestamp() < $event->end->getTimestamp()
-                ) {
-                    $class .= $event->mask ? ' mask' : '';
+                // is the current day in between the start and end of the event
+                } elseif ($running_day->betweenExcluded($event->start, $event->end)) {
+                    $classes .= $event->mask ? ' mask' : '';
 
-                    // is the current day the start of the event
+                // is the current day the start of the event
                 } elseif ($running_day->isSameDay($event->end)) {
-                    $class .= $event->mask ? ' mask-end' : '';
+                    $classes .= $event->mask ? ' mask-end' : '';
                 }
             }
 
-            $today_class = $running_day->isToday() ? ' today' : '';
-
-            $dayRender = '<td class="day cal-day cal-day-' . strtolower($running_day->englishDayOfWeek) . ' ' . $class . $today_class . '" title="' . htmlentities(strip_tags($event_summary)) . '">';
+            $dayRender = '<td class="day cal-day cal-day-'.strtolower($running_day->englishDayOfWeek).' '.$classes.$today_class.'" title="'.htmlentities(strip_tags($event_summary)).'">';
 
             $dayRender .= '<div class="cal-day-box">';
 
@@ -475,7 +389,7 @@ class Calendar
                 // start a new calendar row if there are still days left in the month
                 if (($running_day_count + 1) <= $total_days_in_month) {
                     ++$week;
-                    $calendar .= '<tr class="cal-week-' . $week . '">';
+                    $calendar .= '<tr class="cal-week-'.$week.'">';
                 }
 
                 // reset padding because its a new calendar row
@@ -502,7 +416,7 @@ class Calendar
                     $offset = 0;
                 }
 
-                $calendar .= '<td class="pad cal-' . $days[$offset] . '"> </td>';
+                $calendar .= '<td class="pad cal-'.strtolower(Carbon::now()->dayOfWeek($offset)->englishDayOfWeek).'"> </td>';
             }
         }
 
@@ -510,7 +424,7 @@ class Calendar
 
         $calendar .= '</tbody>';
 
-        return $calendar . '</table>';
+        return $calendar.'</table>';
     }
 
     /**
@@ -551,39 +465,32 @@ class Calendar
     /**
      * Returns the calendar output as a week view.
      */
-    public function asWeekView(\DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function asWeekView(DateTimeInterface|string|null $startDate = null, string $color = ''): string
     {
         $calendar = '<div class="weekly-calendar-container">';
 
         $colspan = 7;
 
-        $days = array_keys($this->days);
-
-        foreach (array_intersect($this->hiddenDays, $days) as $day) {
-                --$colspan;
-                $calendar .= '<style>.cal-' . $day . ',.cal-day-' . $day . '{display:none!important;}</style>';
+        foreach (array_intersect($this->hiddenDays, Carbon::getDays()) as $day) {
+            --$colspan;
+            $calendar .= '<style>.cal-'.strtolower($day).',.cal-day-'.strtolower($day).'{display:none!important;}</style>';
         }
 
-        $date = Carbon::parse($startDate);
+        $startDate = Carbon::parse($startDate);
 
-        if (0 == $this->starting_day) {
-            $date->modify('last sunday');
-        } elseif (1 == $this->starting_day) {
-            $date->modify('last monday');
+        if ($this->starting_day !== $startDate->dayOfWeek) {
+            if (0 === $this->starting_day) {
+                $startDate->previous('sunday');
+            } elseif (1 == $this->starting_day) {
+                $startDate->previous('monday');
+            }
         }
 
-        $dates = [];
-
-        do {
-            $dates[] = clone $date;
-            $date->addDay();
-        } while (count($dates) < 7);
+        $carbonPeriod = $startDate->locale($this->locale)->toPeriod(7);
 
         $today = Carbon::now();
 
-        $color = $color ?: '';
-
-        $calendar .= '<table class="weekly-calendar calendar ' . $color . ' ' . $this->table_classes . '">';
+        $calendar .= '<table class="weekly-calendar calendar '.$color.' '.$this->table_classes.'">';
 
         $calendar .= '<thead>';
 
@@ -591,12 +498,12 @@ class Calendar
 
         $calendar .= '<th></th>';
 
-        $days = $this->getDays();
-        foreach ($dates as $date) {
-            $calendar .= '<th class="cal-th cal-th-' . strtolower($date->englishDayOfWeek) . '">';
-            $calendar .= '<div class="cal-weekview-dow">' . $days[strtolower($date->englishDayOfWeek)]['full'] . '</div>';
-            $calendar .= '<div class="cal-weekview-day">' . $date->day . '</div>';
-            $calendar .= '<div class="cal-weekview-month">' . $this->months[strtolower($date->englishMonth)] . '</div>';
+        /** @var Carbon $date */
+        foreach ($carbonPeriod as $date) {
+            $calendar .= '<th class="cal-th cal-th-'.strtolower($date->englishDayOfWeek).'">';
+            $calendar .= '<div class="cal-weekview-dow">'.ucfirst($date->localeDayOfWeek).'</div>';
+            $calendar .= '<div class="cal-weekview-day">'.$date->day.'</div>';
+            $calendar .= '<div class="cal-weekview-month">'.ucfirst($date->localeMonth).'</div>';
             $calendar .= '</th>';
         }
 
@@ -612,54 +519,46 @@ class Calendar
             $calendar .= '<tr>';
 
             $start_time = $time;
-            $end_time = date('H:i', strtotime($time . ' + ' . $this->time_interval . ' minutes'));
+            $end_time = date('H:i', strtotime($time.' + '.$this->time_interval.' minutes'));
 
-            $calendar .= '<td class="cal-weekview-time-th"><div>' . $start_time . ' - ' . $end_time . '</div></td>';
+            $calendar .= '<td class="cal-weekview-time-th"><div>'.$start_time.' - '.$end_time.'</div></td>';
 
-            foreach ($dates as $date) {
-                $datetime = $date->setTime((int) substr($time, 0, 2), (int) substr($time, 3, 2));
+            /** @var Carbon $date */
+            foreach ($carbonPeriod as $date) {
+                $datetime = $date->setTimeFrom($time);
 
-                $events = $this->findEvents(
-                    clone $datetime,
-                    (clone $datetime)->addMinutes($this->time_interval),
-                    'week'
-                );
+                $events = $this->findEvents($datetime, $datetime->clone()->addMinutes($this->time_interval), 'week');
 
-                $today_class = ($date->format('Y-m-d H') === $today->format('Y-m-d H')) ? ' today' : '';
+                $today_class = $date->isSameHour($today) ? ' today' : '';
 
-                $calendar .= '<td class="cal-weekview-time ' . $today_class . '">';
+                $calendar .= '<td class="cal-weekview-time '.$today_class.'">';
 
                 $calendar .= '<div>';
 
                 foreach ($events as $event) {
-                    $class = '';
-
-                    $event_summary = '';
+                    $classes = '';
 
                     if (in_array($event, $used_events)) {
-                        $event_summary .= '&nbsp;';
+                        $event_summary = '&nbsp;';
                     } else {
-                        $event_summary .= ($event->summary) ?: '';
+                        $event_summary = $event->summary;
                         $used_events[] = $event;
                     }
 
                     // is the current day the start of the event
                     if ($event->start->isSameDay($date)) {
-                        $class .= $event->mask ? ' mask-start' : '';
-                        $class .= ($event->classes) ? ' ' . $event->classes : '';
-                        // is the current day in between the start and end of the event
-                    } elseif (
-                        $date->getTimestamp() > $event->start->getTimestamp()
-                        && $date->getTimestamp() < $event->end->getTimestamp()
-                    ) {
-                        $class .= $event->mask ? ' mask' : '';
+                        $classes .= $event->mask ? ' mask-start' : '';
+                        $classes .= $event->classes;
+                    // is the current day in between the start and end of the event
+                    } elseif ($date->betweenExcluded($event->start, $event->end)) {
+                        $classes .= $event->mask ? ' mask' : '';
 
-                        // is the current day the start of the event
+                    // is the current day the start of the event
                     } elseif ($date->isSameDay($event->end)) {
-                        $class .= $event->mask ? ' mask-end' : '';
+                        $classes .= $event->mask ? ' mask-end' : '';
                     }
 
-                    $calendar .= '<div class="cal-weekview-event ' . $class . '">';
+                    $calendar .= '<div class="cal-weekview-event '.$classes.'">';
                     $calendar .= $event_summary;
                     $calendar .= '</div>';
                 }
@@ -676,17 +575,17 @@ class Calendar
 
         $calendar .= '</table>';
 
-        return $calendar . '</div>';
+        return $calendar.'</div>';
     }
 
     /**
      * Draw the calendar and return HTML output.
      *
-     * @param string|\DateTimeInterface|null $date the date of this calendar
+     * @param string|DateTimeInterface|null $date the date of this calendar
      *
      * @return string The calendar
      */
-    public function draw(\DateTimeInterface|string|null $date = null, string $color = ''): string
+    public function draw(DateTimeInterface|string|null $date = null, string $color = ''): string
     {
         return 'week' === $this->type ? $this->asWeekView($date, $color) : $this->asMonthView($date, $color);
     }
@@ -694,7 +593,7 @@ class Calendar
     /**
      * Shortcut helper to print the calendar output.
      */
-    public function display(string|\DateTimeInterface|null $date = null, string $color = ''): void
+    public function display(string|DateTimeInterface|null $date = null, string $color = ''): void
     {
         echo $this->stylesheet();
         echo $this->draw($date, $color);
