@@ -12,6 +12,10 @@ class Event
 
     public string $classes;
 
+    /**
+     * @param string|list<string> $classes
+     * @param string|list<string> $box_classes
+     */
     public function __construct(
         public Carbon $start,
         public Carbon $end,

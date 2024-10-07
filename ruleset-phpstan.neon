@@ -1,0 +1,19 @@
+
+
+parameters:
+    parallel:
+        jobSize: 5
+        maximumNumberOfProcesses: 4
+        minimumNumberOfJobsPerProcess: 2
+
+    paths:
+        - src
+
+    # Level 9 is the highest level
+    level: 6
+    reportStaticMethodSignatures: true
+#    ignoreErrors:
+#        - '#PHPDoc tag @var#'
+#
+    excludePaths:
+        - .phpstorm.meta.php
