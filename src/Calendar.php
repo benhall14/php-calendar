@@ -320,7 +320,7 @@ class Calendar
         $carbonPeriod = Carbon::now()->locale($this->locale)->startOfWeek($this->starting_day)->toPeriod(7);
         /** @var Carbon $day */
         foreach ($carbonPeriod as $day) {
-            $calendar .= '<th class="cal-th cal-th-'.strtolower($day->englishDayOfWeek).'">'.ucfirst('full' === $this->day_format ? $day->dayName : $day->minDayName).'</th>';
+            $calendar .= '<th class="cal-th cal-th-'.strtolower($day->englishDayOfWeek).'">'.ucfirst('full' === $this->day_format ? $day->dayName : mb_str_split($day->minDayName)[0]).'</th>';
         }
 
         $calendar .= '</tr>';
