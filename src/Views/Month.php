@@ -69,7 +69,8 @@ class Month extends View
         $calendar .= '<tr class="cal-week-'.$week.'">';
 
         // padding before the month start date IE. if the month starts on Wednesday
-        for ($x = 0; $x < $startDate->dayOfWeek; ++$x) {
+        $dayOfWeek = $this->config->starting_day === 1 ? $startDate->dayOfWeekIso : $startDate->dayOfWeek;
+        for ($x = $this->config->starting_day; $x < $dayOfWeek; ++$x) {
             $calendar .= '<td class="pad cal-'.strtolower(Carbon::now()->dayOfWeek($x)->englishDayOfWeek).'"> </td>';
         }
 
