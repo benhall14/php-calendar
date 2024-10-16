@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace benhall14\phpCalendar;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 
 class Config
@@ -55,6 +56,10 @@ class Config
      */
     public array $hiddenDays = [];
 
+    public function getHiddenDays(): array
+    {
+        return array_intersect($this->hiddenDays, Carbon::getDays());
+    }
 
     public function dayShouldBeHidden(CarbonInterface $carbon): bool
     {
