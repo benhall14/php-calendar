@@ -146,9 +146,9 @@ class Calendar
      *     (optional) 'mask' => a masking class name.
      *     (optional) 'classes' => custom classes to include.
      *
-     * @param array<int, array{start: (string | DateTimeInterface), end: (string | DateTimeInterface), summary?: string, classes?: (string | list<string>), mask?: bool, event_box_classes?: (string | list<string>)}> $events the events array
+     * @param iterable<int, array{start: (string| DateTimeInterface), end: (string|DateTimeInterface), summary?: string, classes?: (string|list<string>), mask?: bool, event_box_classes?: (string|list<string>)}> $events the events array
      */
-    public function addEvents(array $events): static
+    public function addEvents(iterable $events): static
     {
         foreach ($events as $event) {
             $classes = $event['classes'] ?? '';
