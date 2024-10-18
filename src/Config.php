@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace benhall14\phpCalendar;
 
+use Carbon\CarbonInterface;
+
 class Config
 {
     public string $locale = 'en_US';
@@ -52,4 +54,10 @@ class Config
      * @var list<string>
      */
     public array $hiddenDays = [];
+
+
+    public function dayShouldBeHidden(CarbonInterface $carbon): bool
+    {
+        return in_array($carbon->englishDayOfWeek, $this->hiddenDays);
+    }
 }

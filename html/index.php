@@ -188,7 +188,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12">
 
-                <?php echo $calendar->useWeekView()->setLocale('fr')->draw(date('Y-12-25'), 'green'); ?>
+                <?php echo $calendar->useWeekView()->hideTuesdays()->setLocale('fr')->draw(date('Y-12-25'), 'green'); ?>
 
             </div>
 
