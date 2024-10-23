@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=8.0",
-        "nesbot/carbon": "^3.8"
+        "nesbot/carbon": "2.*|3.*"
     },
     "scripts": {
         "analyze": "./vendor/bin/phpstan analyse --memory-limit=2G -c ./ruleset-phpstan.neon ",
