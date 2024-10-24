@@ -165,15 +165,15 @@ class Week extends View
 
         // is the current day the start of the event
         if ($event->start->isSameDay($dateTime)) {
-            $classes .= $event->mask ? ' mask-start' : '';
+            $classes .= $event->mask ? ' mask-start ' : '';
             $classes .= $event->classes;
         // is the current day in between the start and end of the event
         } elseif ($dateTime->betweenExcluded($event->start, $event->end)) {
-            $classes .= $event->mask ? ' mask' : '';
+            $classes .= $event->mask ? ' mask ' : '';
 
         // is the current day the start of the event
         } elseif ($dateTime->isSameDay($event->end)) {
-            $classes .= $event->mask ? ' mask-end' : '';
+            $classes .= $event->mask ? ' mask-end ' : '';
         }
 
         return '<div class="cal-weekview-event '.$classes.'">'.$eventSummary.'</div>';
