@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace benhall14\phpCalendar\Views;
 
-use DateTimeInterface;
 use benhall14\phpCalendar\Calendar;
 use benhall14\phpCalendar\Config;
 use benhall14\phpCalendar\Event;
 use Carbon\CarbonInterface;
+use DateTimeInterface;
 
 abstract class View
 {

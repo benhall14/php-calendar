@@ -56,6 +56,9 @@ class Config
      */
     public array $hiddenDays = [];
 
+    /**
+     * @return list<string>
+     */
     public function getHiddenDays(): array
     {
         return array_intersect($this->hiddenDays, Carbon::getDays());
