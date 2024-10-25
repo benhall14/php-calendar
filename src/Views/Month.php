@@ -7,6 +7,7 @@ namespace benhall14\phpCalendar\Views;
 use benhall14\phpCalendar\Event;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use DateTimeInterface;
 
 class Month extends View
 {
@@ -22,7 +23,7 @@ class Month extends View
     /**
      * Returns the calendar as a month view.
      */
-    public function render(\DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function render(DateTimeInterface|string|null $startDate = null, string $color = ''): string
     {
         $calendar = $this->makeHiddenStyles();
 

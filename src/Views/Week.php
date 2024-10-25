@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace benhall14\phpCalendar\Views;
 
-use DateTimeInterface;
 use benhall14\phpCalendar\Event;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
+use DateTimeInterface;
 
 class Week extends View
 {
@@ -98,6 +98,7 @@ class Week extends View
             if ($this->config->dayShouldBeHidden($carbon)) {
                 continue;
             }
+
             $headerString .= '<th class="cal-th cal-th-'.strtolower($carbon->englishDayOfWeek).'">';
             $headerString .= '<div class="cal-weekview-dow">'.ucfirst($carbon->localeDayOfWeek).'</div>';
             $headerString .= '<div class="cal-weekview-day">'.$carbon->day.'</div>';

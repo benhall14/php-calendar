@@ -8,6 +8,7 @@ $rules = [
     'php_unit_method_casing' => ['case' => 'snake_case'],
     'elseif' => true,
     'phpdoc_align' => ['align' => 'left'],
+    'global_namespace_import' => true,
 ];
 
 $dirsToCheck = [
