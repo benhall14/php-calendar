@@ -257,9 +257,10 @@ We now ship with both **English** and **Spanish** translations, with more coming
 
 If you want to help with translations, use the code in the **useSpanish()** method as a guide, and open a pull-request.
 
-# Requirements
+# Credits
+-   [GeoSot](https://github.com/GeoSot)
 
-**Fully tested to work with PHP 5.3, 5.5, 5.6, 7.0, 7.1, 7.2, 7.3 and 8.1**
+# Requirements
 
 **PHP DateTime**
 
