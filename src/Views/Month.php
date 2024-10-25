@@ -136,17 +136,17 @@ class Month extends View
         foreach ($events as $event) {
             // is the current day the start of the event
             if ($event->start->isSameDay($runningDay)) {
-                $classes .= $event->mask ? ' mask-start' : '';
+                $classes .= $event->mask ? ' mask-start ' : '';
                 $classes .= $event->classes;
                 $event_summary .= ($event->summary) ? '<span class="event-summary-row '.$event->box_classes.'">'.$event->summary.'</span>' : '';
 
             // is the current day in between the start and end of the event
             } elseif ($runningDay->betweenExcluded($event->start, $event->end)) {
-                $classes .= $event->mask ? ' mask' : '';
+                $classes .= $event->mask ? ' mask ' : '';
 
             // is the current day the start of the event
             } elseif ($runningDay->isSameDay($event->end)) {
-                $classes .= $event->mask ? ' mask-end' : '';
+                $classes .= $event->mask ? ' mask-end ' : '';
             }
         }
 
