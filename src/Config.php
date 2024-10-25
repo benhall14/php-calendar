@@ -17,24 +17,6 @@ class Config
     public string $type = 'month';
 
     /**
-     * Time Interval used in the week view.
-     * Default is set to 30 minutes.
-     */
-    public int $time_interval = 30;
-
-    /**
-     * The Week View Starting Time.
-     * Leave at 00:00 for a full 24-hour calendar.
-     */
-    public string $start_time = '00:00';
-
-    /**
-     * The Week View end time.
-     * Leave at 00:00 for a full 24-hour calendar.
-     */
-    public string $end_time = '00:00';
-
-    /**
      * The Day Format.
      */
     public string $day_format = 'initials';
