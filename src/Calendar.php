@@ -240,12 +240,15 @@ class Calendar
     /**
      * Draw the calendar and return HTML output.
      *
-     * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
-     *
      * @return string The calendar
      */
-    public function draw(array $options): string
+    public function draw(DateTimeInterface|string|null $date = null, string $color = ''): string
     {
+        $options = [
+            'color' => $color,
+            'startDate' => $date,
+        ];
+
         return 'week' === $this->config->type ? $this->asWeekView($options) : $this->asMonthView($options);
     }
 
@@ -271,9 +274,9 @@ class Calendar
      *
      * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
      */
-    public function display(array $options): void
+    public function render(array $options): void
     {
         echo $this->stylesheet();
-        echo $this->draw($options);
+        echo 'week' === $this->config->type ? $this->asWeekView($options) : $this->asMonthView($options);
     }
 }
