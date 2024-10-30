@@ -18,6 +18,17 @@ class Week extends View
      */
     protected array $usedEvents = [];
 
+    /**
+     * @var array{color: string, startDate: (string|CarbonInterface), timeInterval: int, endTime: string, startTime: string}
+     */
+    private array $options = [
+        'color' => '',
+        'startDate' => '',
+        'timeInterval' => 0,
+        'startTime' => '',
+        'endTime' => '',
+    ];
+
     protected function findEvents(CarbonInterface $start, CarbonInterface $end): array
     {
         $callback = fn (Event $event): bool => $event->start->betweenIncluded($start, $end)
@@ -29,14 +40,18 @@ class Week extends View
 
     /**
      * Returns the calendar output as a week view.
+     *
+     * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
      */
-    public function render(DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function render(array $options): string
     {
-        $startDate = $this->sanitizeStartDate(Carbon::parse($startDate));
+        $this->options = $this->initializeOptions($options);
+
+        $startDate = $this->sanitizeStartDate($this->options['startDate']);
         $carbonPeriod = $startDate->locale($this->config->locale)->toPeriod(7);
         $calendar = [
             '<div class="weekly-calendar-container">',
-            '<table class="weekly-calendar calendar '.$color.' '.$this->config->table_classes.'">',
+            '<table class="weekly-calendar calendar '.$this->options['color'].' '.$this->config->table_classes.'">',
             $this->makeHeader($carbonPeriod),
             '<tbody>',
             $this->renderBlocks($carbonPeriod),
@@ -55,14 +70,14 @@ class Week extends View
      */
     protected function getTimes(): array
     {
-        $start_time = Carbon::createFromFormat('H:i', $this->config->start_time);
-        $end_time = Carbon::createFromFormat('H:i', $this->config->end_time);
+        $start_time = Carbon::createFromFormat('H:i', $this->options['startTime']);
+        $end_time = Carbon::createFromFormat('H:i', $this->options['endTime']);
         if ($start_time->equalTo($end_time)) {
             $end_time->addDay();
         }
 
-        $carbonPeriod = CarbonInterval::minutes($this->config->time_interval)->toPeriod($this->config->start_time,
-            $end_time);
+        $carbonPeriod = CarbonInterval::minutes($this->options['timeInterval'])
+            ->toPeriod($this->options['startTime'], $end_time);
 
         $times = [];
         foreach ($carbonPeriod->toArray() as $carbon) {
@@ -119,7 +134,7 @@ class Week extends View
             $content .= '<tr>';
 
             $start_time = $time;
-            $end_time = date('H:i', strtotime($time.' + '.$this->config->time_interval.' minutes'));
+            $end_time = date('H:i', strtotime($time.' + '.$this->options['timeInterval'].' minutes'));
 
             $content .= '<td class="cal-weekview-time-th"><div>'.$start_time.' - '.$end_time.'</div></td>';
 
@@ -130,7 +145,7 @@ class Week extends View
 
                 $datetime = $carbon->setTimeFrom($time);
 
-                $events = $this->findEvents($datetime, $datetime->clone()->addMinutes($this->config->time_interval));
+                $events = $this->findEvents($datetime, $datetime->clone()->addMinutes($this->options['timeInterval']));
 
                 $today_class = $carbon->isSameHour($today) ? ' today' : '';
 
@@ -178,5 +193,21 @@ class Week extends View
         }
 
         return '<div class="cal-weekview-event '.$classes.'">'.$eventSummary.'</div>';
+    }
+
+    /**
+     * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
+     *
+     * @return array{color: string, startDate: (string|CarbonInterface), timeInterval: int, endTime: string, startTime: string}
+     */
+    public function initializeOptions(array $options): array
+    {
+        return [
+            'color' => $options['color'] ?? '',
+            'startDate' => $this->sanitizeStartDate(Carbon::parse($options['startDate'] ?? null)),
+            'timeInterval' => $options['timeInterval'] ?? 30,
+            'startTime' => $options['startTime'] ?? '00:00',
+            'endTime' => $options['endTime'] ?? '00:00',
+        ];
     }
 }

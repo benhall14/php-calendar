@@ -11,6 +11,14 @@ use DateTimeInterface;
 
 class Month extends View
 {
+    /**
+     * @var array{color: string, startDate: (string|CarbonInterface)}
+     */
+    private array $options = [
+        'color' => '',
+        'startDate' => '',
+    ];
+
     protected function findEvents(CarbonInterface $start, CarbonInterface $end): array
     {
         // Extracting and comparing only the dates (Y-m-d) to avoid time-based exclusion
@@ -22,14 +30,17 @@ class Month extends View
 
     /**
      * Returns the calendar as a month view.
+     *
+     * @param array{color?: string, startDate?: (string|DateTimeInterface)} $options
      */
-    public function render(DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function render(array $options): string
     {
+        $this->options = $this->initializeOptions($options);
         $calendar = $this->makeHiddenStyles();
 
-        $startDate = Carbon::parse($startDate)->firstOfMonth();
+        $startDate = $this->options['startDate'];
 
-        $calendar .= sprintf('<table class="calendar  %s %s ">', $color, $this->config->table_classes);
+        $calendar .= sprintf('<table class="calendar  %s %s ">', $this->options['color'], $this->config->table_classes);
 
         $calendar .= $this->getHeader($startDate);
 
@@ -65,7 +76,7 @@ class Month extends View
         return [] !== $hiddenDays ? sprintf('<style>%s</style>', $style) : '';
     }
 
-    protected function getHeader(Carbon $startDate): string
+    protected function getHeader(CarbonInterface $startDate): string
     {
         $string = '<thead>';
 
@@ -175,5 +186,18 @@ class Month extends View
         }
 
         return $string.$dayRender;
+    }
+
+    /**
+     * @param array{color?: string, startDate?: (string|DateTimeInterface)} $options
+     *
+     * @return array{color: string, startDate: (string|CarbonInterface)}
+     */
+    public function initializeOptions(array $options): array
+    {
+        return [
+            'color' => $options['color'] ?? '',
+            'startDate' => Carbon::parse($options['startDate'] ?? null)->firstOfMonth(),
+        ];
     }
 }

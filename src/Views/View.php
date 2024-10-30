@@ -27,6 +27,8 @@ abstract class View
 
     /**
      * Returns the calendar as a month view.
+     *
+     * @param array{color?: string, startDate?: (string|DateTimeInterface)} $options
      */
-    abstract public function render(DateTimeInterface|string|null $startDate = null, string $color = ''): string;
+    abstract public function render(array $options): string;
 }

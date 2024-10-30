@@ -219,30 +219,37 @@ class Calendar
 
     /**
      * Returns the calendar as a month view.
+     *
+     * @param array{ color?:string, startDate?: string|DateTimeInterface } $options
      */
-    public function asMonthView(DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function asMonthView(array $options): string
     {
-        return (new Month($this->config, $this))->render($startDate, $color);
+        return (new Month($this->config, $this))->render($options);
     }
 
     /**
      * Returns the calendar as a month view.
+     *
+     * @param array{ color?:string, startDate?: string|DateTimeInterface,  timeInterval?:int,endTime?:string, startTime?:string } $options
      */
-    public function asWeekView(DateTimeInterface|string|null $startDate = null, string $color = ''): string
+    public function asWeekView(array $options): string
     {
-        return (new Week($this->config, $this))->render($startDate, $color);
+        return (new Week($this->config, $this))->render($options);
     }
 
     /**
      * Draw the calendar and return HTML output.
      *
-     * @param string|DateTimeInterface|null $date the date of this calendar
-     *
      * @return string The calendar
      */
     public function draw(DateTimeInterface|string|null $date = null, string $color = ''): string
     {
-        return 'week' === $this->config->type ? $this->asWeekView($date, $color) : $this->asMonthView($date, $color);
+        $options = [
+            'color' => $color,
+            'startDate' => $date,
+        ];
+
+        return 'week' === $this->config->type ? $this->asWeekView($options) : $this->asMonthView($options);
     }
 
     /**
@@ -264,10 +271,12 @@ class Calendar
 
     /**
      * Shortcut helper to print the calendar output.
+     *
+     * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
      */
-    public function display(string|DateTimeInterface|null $date = null, string $color = ''): void
+    public function render(array $options): void
     {
         echo $this->stylesheet();
-        echo $this->draw($date, $color);
+        echo 'week' === $this->config->type ? $this->asWeekView($options) : $this->asMonthView($options);
     }
 }
