@@ -274,9 +274,19 @@ class Calendar
      *
      * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
      */
-    public function render(array $options): void
+    public function display(array $options): void
     {
         echo $this->stylesheet();
+        echo $this->render($options);
+    }
+
+    /**
+     * New Render method that uses options.
+     *
+     * @param array{color?: string, startDate?: (string|DateTimeInterface), timeInterval?: int, endTime?: string, startTime?: string} $options
+     */
+    public function render(array $options): void
+    {
         echo 'week' === $this->config->type ? $this->asWeekView($options) : $this->asMonthView($options);
     }
 }
