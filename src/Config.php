@@ -7,8 +7,18 @@ namespace benhall14\phpCalendar;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 
+/**
+ * Config Class
+ * 
+ * @author Benjamin Hall <ben@conobe.co.uk>
+ */
 class Config
 {
+    /**
+     * Default Locale
+     *
+     * @var string
+     */
     public string $locale = 'en_US';
 
     /**
@@ -25,6 +35,27 @@ class Config
      * Start day of week. Default = 0 (Sunday).
      */
     public int $starting_day = 0;
+
+    /**
+     * Start Time
+     *
+     * @var string
+     */
+    public string $start_time = '00:00';
+
+    /**
+     * End Time
+     *
+     * @var string
+     */
+    public string $end_time = '00:00';
+
+    /**
+     * Time Interval
+     *
+     * @var int
+     */
+    public int $time_interval = 30;
 
     /**
      * Table classes that should be injected into the table header.

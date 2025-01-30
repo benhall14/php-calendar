@@ -44,6 +44,15 @@ class Calendar
         return $this;
     }
 
+    public function setTimeFormat(string $start_time, string $end_time, int $interval): static
+    {
+        $this->config->start_time = $start_time;
+        $this->config->end_time = $end_time;
+        $this->config->time_interval = $interval;
+
+        return $this;
+    }
+
     /**
      * @param array<string,mixed> $args
      *

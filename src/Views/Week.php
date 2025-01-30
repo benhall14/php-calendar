@@ -31,7 +31,7 @@ class Week extends View
 
     protected function findEvents(CarbonInterface $start, CarbonInterface $end): array
     {
-        $callback = fn (Event $event): bool => $event->start->betweenIncluded($start, $end)
+        $callback = fn(Event $event): bool => $event->start->betweenIncluded($start, $end)
             || $event->end->betweenIncluded($start, $end)
             || $end->betweenIncluded($event->start, $event->end);
 
@@ -51,7 +51,7 @@ class Week extends View
         $carbonPeriod = $startDate->locale($this->config->locale)->toPeriod(7);
         $calendar = [
             '<div class="weekly-calendar-container">',
-            '<table class="weekly-calendar calendar '.$this->options['color'].' '.$this->config->table_classes.'">',
+            '<table class="weekly-calendar calendar ' . $this->options['color'] . ' ' . $this->config->table_classes . '">',
             $this->makeHeader($carbonPeriod),
             '<tbody>',
             $this->renderBlocks($carbonPeriod),
@@ -114,16 +114,16 @@ class Week extends View
                 continue;
             }
 
-            $headerString .= '<th class="cal-th cal-th-'.strtolower($carbon->englishDayOfWeek).'">';
-            $headerString .= '<div class="cal-weekview-dow">'.ucfirst($carbon->localeDayOfWeek).'</div>';
-            $headerString .= '<div class="cal-weekview-day">'.$carbon->day.'</div>';
-            $headerString .= '<div class="cal-weekview-month">'.ucfirst($carbon->localeMonth).'</div>';
+            $headerString .= '<th class="cal-th cal-th-' . strtolower($carbon->englishDayOfWeek) . '">';
+            $headerString .= '<div class="cal-weekview-dow">' . ucfirst($carbon->localeDayOfWeek) . '</div>';
+            $headerString .= '<div class="cal-weekview-day">' . $carbon->day . '</div>';
+            $headerString .= '<div class="cal-weekview-month">' . ucfirst($carbon->localeMonth) . '</div>';
             $headerString .= '</th>';
         }
 
         $headerString .= '</tr>';
 
-        return $headerString.'</thead>';
+        return $headerString . '</thead>';
     }
 
     protected function renderBlocks(CarbonPeriod $carbonPeriod): string
@@ -134,9 +134,9 @@ class Week extends View
             $content .= '<tr>';
 
             $start_time = $time;
-            $end_time = date('H:i', strtotime($time.' + '.$this->options['timeInterval'].' minutes'));
+            $end_time = date('H:i', strtotime($time . ' + ' . $this->options['timeInterval'] . ' minutes'));
 
-            $content .= '<td class="cal-weekview-time-th"><div>'.$start_time.' - '.$end_time.'</div></td>';
+            $content .= '<td class="cal-weekview-time-th"><div>' . $start_time . ' - ' . $end_time . '</div></td>';
 
             foreach ($carbonPeriod->toArray() as $carbon) {
                 if ($this->config->dayShouldBeHidden($carbon)) {
@@ -149,7 +149,7 @@ class Week extends View
 
                 $today_class = $carbon->isSameHour($today) ? ' today' : '';
 
-                $content .= '<td class="cal-weekview-time '.$today_class.'">';
+                $content .= '<td class="cal-weekview-time ' . $today_class . '">';
 
                 $content .= '<div>';
 
@@ -183,16 +183,16 @@ class Week extends View
         if ($event->start->isSameDay($dateTime)) {
             $classes .= $event->mask ? ' mask-start ' : '';
             $classes .= $event->classes;
-        // is the current day in between the start and end of the event
+            // is the current day in between the start and end of the event
         } elseif ($dateTime->betweenExcluded($event->start, $event->end)) {
             $classes .= $event->mask ? ' mask ' : '';
 
-        // is the current day the start of the event
+            // is the current day the start of the event
         } elseif ($dateTime->isSameDay($event->end)) {
             $classes .= $event->mask ? ' mask-end ' : '';
         }
 
-        return '<div class="cal-weekview-event '.$classes.'">'.$eventSummary.'</div>';
+        return '<div class="cal-weekview-event ' . $classes . '">' . $eventSummary . '</div>';
     }
 
     /**
@@ -205,9 +205,9 @@ class Week extends View
         return [
             'color' => $options['color'] ?? '',
             'startDate' => $this->sanitizeStartDate(Carbon::parse($options['startDate'] ?? null)),
-            'timeInterval' => $options['timeInterval'] ?? 30,
-            'startTime' => $options['startTime'] ?? '00:00',
-            'endTime' => $options['endTime'] ?? '00:00',
+            'timeInterval' => $options['timeInterval'] ?? $this->config->time_interval,
+            'startTime' => $options['startTime'] ?? $this->config->start_time,
+            'endTime' => $options['endTime'] ?? $this->config->end_time,
         ];
     }
 }
