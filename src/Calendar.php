@@ -37,6 +37,13 @@ class Calendar
         $this->config = new Config();
     }
 
+    /**
+     * Set the locale for the calendar.
+     * 
+     * @param string $locale
+     * 
+     * @return $this
+     */
     public function setLocale(string $locale): static
     {
         $this->config->locale = $locale;
@@ -44,6 +51,15 @@ class Calendar
         return $this;
     }
 
+    /**
+     * Set the time format for the calendar.
+     *
+     * @param  string  $start_time
+     * @param  string  $end_time
+     * @param  integer $interval
+     *
+     * @return $this
+     */
     public function setTimeFormat(string $start_time, string $end_time, int $interval): static
     {
         $this->config->start_time = $start_time;

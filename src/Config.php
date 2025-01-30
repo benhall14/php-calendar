@@ -77,6 +77,15 @@ class Config
         return array_intersect($this->hiddenDays, Carbon::getDays());
     }
 
+    /**
+     * Should days be hidden.
+     * 
+     * Returns true or false if the day should be hidden.
+     *
+     * @param  CarbonInterface $carbon
+     *
+     * @return boolean
+     */
     public function dayShouldBeHidden(CarbonInterface $carbon): bool
     {
         return in_array($carbon->englishDayOfWeek, $this->hiddenDays);

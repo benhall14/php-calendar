@@ -69,6 +69,10 @@ Or, you can break it down with full customisability:
     # to revert to initials, use:
     $calendar->useInitialDayNames();
 
+    # use the French locale, with days and month names being translated to French.
+    $calendar->setLocale('fr_FR');
+    # This uses the Carbon locales - https://carbon.nesbot.com/docs/#api-localization
+
     # add your own table class(es)
     $calendar->addTableClasses('class-1 class-2 class-3');
     # or using an array of classes.
@@ -201,68 +205,14 @@ You can now change the weekly start date from a **Sunday** to a **Monday**. To a
 
 #### Translated Calendars
 
-We now ship with both **English** and **Spanish** translations, with more coming soon. Alternatively, you can add your own custom string translations for both the days and months using the following:
-
-````php
-    	
-    # This will set up the days - simply copy/paste the code below and replace the Spanish initials and full-day names with your own. (NB - Leave the keys in English)
-    $calendar->setDays([
-        'sunday' => [
-        	'initials' => 'D',
-        	'full' => 'Domingo'
-        ],
-        'monday' => [
-        	'initials' => 'L',
-        	'full' => 'Lunes',
-        ],
-        'tuesday' => [
-        	'initials' => 'M',
-        	'full' => 'Martes',
-        ],
-        'wednesday' => [
-        	'initials' => 'X',
-        	'full' => 'Miércoles',
-        ],
-        'thursday' => [
-        	'initials' => 'J',
-        	'full' => 'Jueves',
-        ],
-        'friday' => [
-        	'initials' => 'V',
-        	'full' => 'Viernes',
-        ],
-        'saturday' => [
-        	'initials' => 'S',
-        	'full' => 'Sábado',
-        ],
-    ]);
-    
-    # To add custom month names, simply copy/paste the code below and replace the Spanish month names with your own strings. (NB - Leave the keys in English)
-    $calendar->setMonths([
-        'january' => 'Enero',  
-        'february' => 'Febrero',  
-        'march' => 'Marzo',  
-        'april' => 'Abril',  
-        'may' => 'Mayo',  
-        'june' => 'Junio',  
-        'july' => 'Julio',  
-        'august' => 'Agosto',  
-        'september' => 'Septiembre',  
-        'october' => 'Octubre',  
-        'november' => 'Noviembre',  
-        'december' => 'Diciembre'
-    ]);
-
-````
-
-If you want to help with translations, use the code in the **useSpanish()** method as a guide, and open a pull-request.
+We now use automatically from the date and the setLocale() method. If you use ->setLocale('fr_FR'), then the days and month names will be French. For more information on the Carbon localization, see https://carbon.nesbot.com/docs/#api-localization
 
 # Credits
 -   [GeoSot](https://github.com/GeoSot)
 
 # Requirements
 
-**PHP DateTime**
+**Carbon**
 
 # License
 Copyright (c) 2016-2022 Benjamin Hall, ben@conobe.co.uk 
