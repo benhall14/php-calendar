@@ -79,7 +79,7 @@ Or, you can break it down with full customisability:
     $calendar->addTableClasses(['class-1', 'class-2', 'class-3']);
     
     # (optional) - if you want to hide certain weekdays from the calendar, for example a calendar without weekends, you can use the following methods:
-    $calendar->hideSaturdays() 		# This will hide Saturdays
+    $calendar->hideSaturdays();		# This will hide Saturdays
     $calendar->hideSundays(); 		# This will hide Sundays
     $calendar->hideMondays(); 		# This will hide Mondays
     $calendar->hideTuesdays(); 		# This will hide Tuesdays
@@ -96,7 +96,7 @@ Or, you can break it down with full customisability:
 	    '2022-01-14',   # end date in either Y-m-d or Y-m-d H:i if you want to add a time.
 	    'My Birthday',  # event name text
 	    true,           # should the date be masked - boolean default true
-	    ['myclass', 'abc']   # (optional) additional classes in either string or array format to be included on the event days
+	    ['myclass', 'abc'],   # (optional) additional classes in either string or array format to be included on the event days
 	    ['event-class', 'abc']   # (optional) additional classes in either string or array format to be included on the event summary box
 	);
 
@@ -144,7 +144,7 @@ Or, you can break it down with full customisability:
     echo $calendar->draw(date('Y-m-d'), 'blue');    # print a blue calendar  
     
     # you can also call ->display(), which handles the echo'ing and adding the stylesheet.
-    echo $calendar->display(date('Y-m-d')); # draw this months calendar    
+    echo $calendar->display(array(date('Y-m-d'))); # draw this months calendar    
 
 ```
 #### Draw a 'Week View' calendar
