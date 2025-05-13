@@ -51,8 +51,8 @@ class Week extends View
         $carbonPeriod = $startDate->locale($this->config->locale)->toPeriod(7);
 
         $calendar = [
-            '<div class="weekly-calendar-container">',
-            '<table class="weekly-calendar calendar ' . $this->options['color'] . ' ' . $this->config->table_classes . '">',
+            '<div class="weekly-calendar-container bh-weekly-calendar-container">',
+            '<table class="weekly-calendar bh-weekly-calendar calendar ' . $this->options['color'] . ' ' . $this->config->table_classes . '">',
             $this->makeHeader($carbonPeriod),
             '<tbody>',
             $this->renderBlocks($carbonPeriod),
@@ -105,7 +105,7 @@ class Week extends View
     {
         $headerString = '<thead>';
 
-        $headerString .= '<tr class="calendar-header">';
+        $headerString .= '<tr class="calendar-header bh-calendar-header">';
 
         $headerString .= '<th></th>';
 

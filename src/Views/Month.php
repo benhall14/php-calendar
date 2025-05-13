@@ -40,11 +40,11 @@ class Month extends View
 
         $startDate = $this->options['startDate'];
 
-        $calendar .= sprintf('<table class="calendar  %s %s ">', $this->options['color'], $this->config->table_classes);
+        $calendar .= sprintf('<table class="calendar bh-calendar  %s %s ">', $this->options['color'], $this->config->table_classes);
 
         $calendar .= $this->getHeader($startDate);
 
-        $calendar .= '<tbody>';
+        $calendar .= '<tbody class="bh-calendar-body">';
 
         $calendar .= '<tr class="cal-week-'.$startDate->weekOfMonth.'">';
         $calendar .= $this->paddingBeforeTheMonthStartDate($startDate);
@@ -80,7 +80,7 @@ class Month extends View
     {
         $string = '<thead>';
 
-        $string .= '<tr class="calendar-title">';
+        $string .= '<tr class="calendar-title bh-calendar-title">';
 
         $colspan = 7 - count($this->config->getHiddenDays());
         $string .= '<th colspan="'.$colspan.'">';
@@ -90,7 +90,7 @@ class Month extends View
         $string .= '</th>';
 
         $string .= '</tr>';
-        $string .= '<tr class="calendar-header">';
+        $string .= '<tr class="calendar-header bh-calendar-header">';
 
         $carbonPeriod = Carbon::now()->locale($this->config->locale)->startOfWeek($this->config->starting_day)->toPeriod(7);
 
