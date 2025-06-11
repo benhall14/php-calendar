@@ -11,6 +11,7 @@ class Event
     public string $box_classes;
 
     public string $classes;
+    public array $dataAttributes;
 
     /**
      * @param string|list<string> $classes
@@ -23,8 +24,10 @@ class Event
         public bool $mask = false,
         string|array $classes = '',
         string|array $box_classes = [],
+        array $dataAttributes = []
     ) {
         $this->classes = is_array($classes) ? implode(' ', $classes) : $classes;
         $this->box_classes = is_array($box_classes) ? implode(' ', $box_classes) : $box_classes;
+        $this->dataAttributes = $dataAttributes;
     }
 }

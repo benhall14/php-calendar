@@ -149,6 +149,7 @@ class Calendar
         bool $mask = false,
         string|array $classes = [],
         string|array $box_classes = [],
+        array $dataAttributes = []
     ): static {
         $this->events[] = new Event(
             Carbon::parse($start),
@@ -156,7 +157,8 @@ class Calendar
             $summary,
             $mask,
             $classes,
-            $box_classes
+            $box_classes, 
+            $dataAttributes
         );
 
         return $this;
@@ -180,7 +182,8 @@ class Calendar
             $mask = (bool) ($event['mask'] ?? false);
             $summary = $event['summary'] ?? '';
             $box_classes = $event['event_box_classes'] ?? '';
-            $this->addEvent($event['start'], $event['end'], $summary, $mask, $classes, $box_classes);
+            $dataAttributes = $event['dataAttributes'] ?? [];
+            $this->addEvent($event['start'], $event['end'], $summary, $mask, $classes, $box_classes, $dataAttributes);
         }
 
         return $this;

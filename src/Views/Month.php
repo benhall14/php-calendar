@@ -142,6 +142,8 @@ class Month extends View
         $events = $this->findEvents((clone $runningDay)->startOfDay(), (clone $runningDay)->endOfDay());
 
         $classes = '';
+        $data_attrs = [];
+        $data_attrs_str = '';
         $event_summary = '';
         $today_class = $runningDay->isToday() ? ' today' : '';
         $string = '';
@@ -160,9 +162,16 @@ class Month extends View
             } elseif ($runningDay->isSameDay($event->end)) {
                 $classes .= $event->mask ? ' mask-end ' : '';
             }
+            // Apply data attributes.
+            if (isset($event->dataAttributes) && is_array($event->dataAttributes)) {
+                foreach ($event->dataAttributes as $attrname => $attrval) {
+                    $data_attrs[] = $attrname . '="' . $attrval . '"';
+                }
+                $data_attrs_str = implode(' ', $data_attrs);
+            }
         }
 
-        $dayRender = '<td class="day cal-day cal-day-'.strtolower($runningDay->englishDayOfWeek).' '.$classes.$today_class.'" title="'.htmlentities(strip_tags($event_summary)).'">';
+        $dayRender = '<td class="day cal-day cal-day-'.strtolower($runningDay->englishDayOfWeek).' '.$classes.$today_class.'" '.$data_attrs_str.' title="'.htmlentities(strip_tags($event_summary)).'">';
 
         $dayRender .= '<div class="cal-day-box">';
 
