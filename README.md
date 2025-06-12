@@ -98,7 +98,7 @@ Or, you can break it down with full customisability:
 	    true,           # should the date be masked - boolean default true
 	    ['myclass', 'abc'],   # (optional) additional classes in either string or array format to be included on the event days
 	    ['event-class', 'abc'],   # (optional) additional classes in either string or array format to be included on the event summary box
-        ['data-type' => 'holiday', 'data-holiday' => 'Independence Day'] # (optional) arbitrary data attributes to be included on the event day
+	    ['data-type' => 'holiday', 'data-holiday' => 'Independence Day'] # (optional) arbitrary data attributes to be included on the event day
 	);
 
     # or for multiple events
@@ -111,8 +111,8 @@ Or, you can break it down with full customisability:
 		'summary' => 'My Birthday',
 		'mask' => true,
 		'classes' => ['myclass', 'abc'],
-        'event_box_classes' => ['event-box-1'], 
-        'dataAttributes' => ['data-type' => 'holiday', 'data-holiday' => 'Independence Day']
+		'event_box_classes' => ['event-box-1'], 
+		'dataAttributes' => ['data-type' => 'holiday', 'data-holiday' => 'Independence Day']
 	);
 
 	$events[] = array(
