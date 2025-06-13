@@ -126,6 +126,78 @@ class Calendar
     }
 
     /**
+     * The data attributes array.
+     *
+     * @var array
+     */
+    private array $data_attributes = [];
+
+    /**
+     * Add a data attribute to a specific date.
+     *
+     * @param  string|DateTimeInterface $date
+     * @param  string                   $name
+     * @param  string                   $value
+     *
+     * @return static
+     */
+    public function addDataAttribute(
+        string|DateTimeInterface $date,
+        string $name,
+        string $value
+    ): static {
+
+        $this->data_attributes[Carbon::parse($date)->format('Y-m-d')][$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Add multiple data attributes to a specific date.
+     *
+     * @param  string|DateTimeInterface $date
+     * @param  array                    $attributes
+     *
+     * @return static
+     */
+    public function addDataAttributes(
+        string|DateTimeInterface $date,
+        array $attributes
+    ): static {
+        foreach ($attributes as $name => $value) {
+            $this->addDataAttribute($date, $name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the data attributes for a specific date.
+     *
+     * @param  string|DateTimeInterface $date
+     *
+     * @return array
+     */
+    public function getDataAttributes(
+        string|DateTimeInterface $date
+    ): array {
+        $date = Carbon::parse($date)->format('Y-m-d');
+
+        return $this->data_attributes[$date] ?? [];
+    }
+
+    /**
+     * Returns all data attributes for the calendar.
+     *
+     * @return array
+     */
+    public function getAllDataAttributes(): array
+    {
+        return $this->data_attributes;
+    }
+
+
+    /**
      * The events array.
      *
      * @var array<Event>

@@ -6,6 +6,14 @@ use benhall14\phpCalendar\Calendar;
 
 $calendar = new Calendar();
 
+$data_attributes = [
+    'data-attribute' => 'value',
+    'data-attribute2' => 'value2',
+    'data-attribute3' => 'value3',
+];
+
+$calendar->addDataAttributes(date('Y-01-14'), $data_attributes);
+
 $calendar
     ->addEvent(date('Y-01-14'), date('Y-01-14'), 'My Birthday', true)
     ->addEvent(date('Y-12-25'), date('Y-12-25'), 'Christmas', true)
@@ -77,7 +85,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->draw(date('Y-1-1' )); ?>
+                <?php echo $calendar->draw(date('Y-1-1')); ?>
 
                 <hr />
 
@@ -85,7 +93,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->setLocale('it')->render(['startDate'=>date('Y-2-1' ),'color'=>'pink']); ?>
+                <?php echo $calendar->setLocale('it')->render(['startDate' => date('Y-2-1'), 'color' => 'pink']); ?>
 
                 <hr />
 
@@ -93,7 +101,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->setLocale('fr')->render(['startDate'=>date('Y-3-1' ),'color'=>'blue']); ?>
+                <?php echo $calendar->setLocale('fr')->render(['startDate' => date('Y-3-1'), 'color' => 'blue']); ?>
 
                 <hr />
 
@@ -101,7 +109,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->setLocale('es')->render(['startDate'=>date('Y-4-1'), 'color'=>'orange']); ?>
+                <?php echo $calendar->setLocale('es')->render(['startDate' => date('Y-4-1'), 'color' => 'orange']); ?>
 
                 <hr />
 
@@ -109,22 +117,14 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->setLocale('el')->render(['startDate'=>date('Y-5-1'), 'color'=>'purple']); ?>
+                <?php echo $calendar->setLocale('el')->render(['startDate' => date('Y-5-1'), 'color' => 'purple']); ?>
                 <hr />
 
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->setLocale('en')->render(['startDate'=>date('Y-6-1'), 'color'=>'yellow']); ?>
-
-                <hr />
-
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4">
-
-                <?php echo $calendar->render(['startDate'=>date('Y-7-1') ,'color'=>'green']); ?>
+                <?php echo $calendar->setLocale('en')->render(['startDate' => date('Y-6-1'), 'color' => 'yellow']); ?>
 
                 <hr />
 
@@ -132,7 +132,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->render(['startDate'=>date('Y-8-1' ),'color'=>'grey']); ?>
+                <?php echo $calendar->render(['startDate' => date('Y-7-1'), 'color' => 'green']); ?>
 
                 <hr />
 
@@ -140,7 +140,7 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->render(['startDate'=>date('Y-9-1' ),'color'=>'pink']); ?>
+                <?php echo $calendar->render(['startDate' => date('Y-8-1'), 'color' => 'grey']); ?>
 
                 <hr />
 
@@ -148,19 +148,27 @@ $calendar->addEvents($events);
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->render(['startDate'=>date('Y-10-1' ),'color'=>'blue']); ?>
+                <?php echo $calendar->render(['startDate' => date('Y-9-1'), 'color' => 'pink']); ?>
+
+                <hr />
 
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->render(['startDate'=>date('Y-11-1'), 'color'=>'orange']); ?>
+                <?php echo $calendar->render(['startDate' => date('Y-10-1'), 'color' => 'blue']); ?>
 
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-4">
 
-                <?php echo $calendar->render(['startDate'=>date('Y-12-1'), 'color'=>'purple']); ?>
+                <?php echo $calendar->render(['startDate' => date('Y-11-1'), 'color' => 'orange']); ?>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+
+                <?php echo $calendar->render(['startDate' => date('Y-12-1'), 'color' => 'purple']); ?>
 
                 <hr />
 
@@ -177,8 +185,8 @@ $calendar->addEvents($events);
             <div class="col-xs-12">
 
                 <?php echo $calendar->useWeekView()->render([
-                    'startDate'=>date('Y-1-1'),
-                    'color'=>'blue',
+                    'startDate' => date('Y-1-1'),
+                    'color' => 'blue',
                     'startTime' => '10:00',
                     'endTime' => '20:30'
                 ]); ?>

@@ -90,6 +90,12 @@ Or, you can break it down with full customisability:
     # (optional) - Translated Calendars - currently, there is only Spanish, but see "Translations" below for adding your own strings.
     $calendar->useSpanish(); 
 
+    # custom data attributes - you can add custom data attributes to days using the following:
+    $calendar->addDataAttribute('2025-01-14', 'data-attribute-1', 'value-1');
+
+    # or for multiple attributes
+    $calendar->addDataAttributes('2025-01-14', ['data-attribute-1' => 'value', 'data-attribute-2' => 'value-2']);
+
     # if needed, add event
 	$calendar->addEvent(
 	    '2022-01-14',   # start date in either Y-m-d or Y-m-d H:i if you want to add a time.

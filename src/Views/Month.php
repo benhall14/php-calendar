@@ -22,7 +22,8 @@ class Month extends View
     protected function findEvents(CarbonInterface $start, CarbonInterface $end): array
     {
         // Extracting and comparing only the dates (Y-m-d) to avoid time-based exclusion
-        $callback = fn (Event $event,
+        $callback = fn(
+            Event $event,
         ): bool => $start->greaterThanOrEqualTo((clone $event->start)->startOfDay()) && $start->lessThanOrEqualTo((clone $event->end)->endOfDay());
 
         return array_filter($this->calendar->getEvents(), $callback);
@@ -46,7 +47,7 @@ class Month extends View
 
         $calendar .= '<tbody>';
 
-        $calendar .= '<tr class="cal-week-'.$startDate->weekOfMonth.'">';
+        $calendar .= '<tr class="cal-week-' . $startDate->weekOfMonth . '">';
         $calendar .= $this->paddingBeforeTheMonthStartDate($startDate);
 
         $carbonPeriod = $startDate->locale($this->config->locale)->toPeriod($startDate->daysInMonth());
@@ -60,7 +61,7 @@ class Month extends View
 
         $calendar .= '</tbody>';
 
-        return $calendar.'</table>';
+        return $calendar . '</table>';
     }
 
     public function makeHiddenStyles(): string
@@ -83,9 +84,9 @@ class Month extends View
         $string .= '<tr class="calendar-title">';
 
         $colspan = 7 - count($this->config->getHiddenDays());
-        $string .= '<th colspan="'.$colspan.'">';
+        $string .= '<th colspan="' . $colspan . '">';
 
-        $string .= ucfirst($startDate->locale($this->config->locale)->monthName).' '.$startDate->year;
+        $string .= ucfirst($startDate->locale($this->config->locale)->monthName) . ' ' . $startDate->year;
 
         $string .= '</th>';
 
@@ -95,12 +96,12 @@ class Month extends View
         $carbonPeriod = Carbon::now()->locale($this->config->locale)->startOfWeek($this->config->starting_day)->toPeriod(7);
 
         foreach ($carbonPeriod->toArray() as $carbon) {
-            $string .= '<th class="cal-th cal-th-'.strtolower($carbon->englishDayOfWeek).'">'.ucfirst('full' === $this->config->day_format ? $carbon->dayName : mb_str_split($carbon->minDayName)[0]).'</th>';
+            $string .= '<th class="cal-th cal-th-' . strtolower($carbon->englishDayOfWeek) . '">' . ucfirst('full' === $this->config->day_format ? $carbon->dayName : mb_str_split($carbon->minDayName)[0]) . '</th>';
         }
 
         $string .= '</tr>';
 
-        return $string.'</thead>';
+        return $string . '</thead>';
     }
 
     protected function paddingBeforeTheMonthStartDate(CarbonInterface $currentDay): string
@@ -114,7 +115,7 @@ class Month extends View
         $string = '';
         foreach (array_reverse(range(1, $padding)) as $num) {
             $day = $currentDay->clone()->subDays($num);
-            $string .= '<td class="pad cal-day-'.strtolower($day->englishDayOfWeek).'"> </td>';
+            $string .= '<td class="pad cal-day-' . strtolower($day->englishDayOfWeek) . '"> </td>';
         }
 
         return $string;
@@ -131,7 +132,7 @@ class Month extends View
         $string = '';
         foreach (range(1, $padding) as $num) {
             $day = $currentDay->clone()->addDays($num);
-            $string .= '<td class="pad cal-day-'.strtolower($day->englishDayOfWeek).'"> </td>';
+            $string .= '<td class="pad cal-day-' . strtolower($day->englishDayOfWeek) . '"> </td>';
         }
 
         return $string;
@@ -150,19 +151,28 @@ class Month extends View
             if ($event->start->isSameDay($runningDay)) {
                 $classes .= $event->mask ? ' mask-start ' : '';
                 $classes .= $event->classes;
-                $event_summary .= ($event->summary) ? '<span class="event-summary-row '.$event->box_classes.'">'.$event->summary.'</span>' : '';
+                $event_summary .= ($event->summary) ? '<span class="event-summary-row ' . $event->box_classes . '">' . $event->summary . '</span>' : '';
 
-            // is the current day in between the start and end of the event
+                // is the current day in between the start and end of the event
             } elseif ($runningDay->betweenExcluded($event->start, $event->end)) {
                 $classes .= $event->mask ? ' mask ' : '';
 
-            // is the current day the start of the event
+                // is the current day the start of the event
             } elseif ($runningDay->isSameDay($event->end)) {
                 $classes .= $event->mask ? ' mask-end ' : '';
             }
         }
 
-        $dayRender = '<td class="day cal-day cal-day-'.strtolower($runningDay->englishDayOfWeek).' '.$classes.$today_class.'" title="'.htmlentities(strip_tags($event_summary)).'">';
+        $data_attributes = '';
+        $data_attributes_array = $this->calendar->getDataAttributes($runningDay);
+
+        if ($data_attributes_array) {
+            foreach ($data_attributes_array as $key => $value) {
+                $data_attributes .= ' ' . $key . '="' . htmlentities(strip_tags($value)) . '" ';
+            }
+        }
+
+        $dayRender = '<td class="day cal-day cal-day-' . strtolower($runningDay->englishDayOfWeek) . ' ' . $classes . $today_class . '" ' . $data_attributes . ' title="' . htmlentities(strip_tags($event_summary)) . '">';
 
         $dayRender .= '<div class="cal-day-box">';
 
@@ -182,10 +192,10 @@ class Month extends View
         if ($runningDay->dayOfWeek === $this->config->starting_day) {
             $string .= '</tr>';
             // start a new calendar row if there are still days left in the month
-            $string .= '<tr class="cal-week-'.$runningDay->weekOfMonth.'">';
+            $string .= '<tr class="cal-week-' . $runningDay->weekOfMonth . '">';
         }
 
-        return $string.$dayRender;
+        return $string . $dayRender;
     }
 
     /**
