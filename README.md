@@ -40,6 +40,27 @@ You can apply styles in one of three ways:
 ```
 3) Create your own stylesheet and add it to the head of your HTML document.
 
+#### Migration
+With the release of 2.0, there were some breaking changes. This includes how dates are passed to the draw method, and the translations. 
+
+The display() method no longer works like this:
+
+```php
+
+$calendar->display(array(date('Y-m-d')));
+
+```
+
+Instead, it now expects an associative array, like:
+
+```php
+
+$calendar->display(['date' => '2025-05-01']);
+
+```
+
+See "Translated Calendars" for more information on how calendars are now translated.
+
 #### Draw a 'Month View' calendar
 
 In its simplest form, use the following to create a calendar for current month. This will use all defaults (English, Week starting on Sunday, including stylesheet, printing to the page).
@@ -87,15 +108,22 @@ Or, you can break it down with full customisability:
     $calendar->hideThursdays();		# This will hide Thursdays
     $calendar->hideFridays();		# This will hide Fridays
     
-    # (optional) - Translated Calendars - currently, there is only Spanish, but see "Translations" below for adding your own strings.
-    $calendar->useSpanish(); 
-
     # custom data attributes - you can add custom data attributes to days using the following:
     $calendar->addDataAttribute('2025-01-14', 'data-attribute-1', 'value-1');
 
     # or for multiple attributes
     $calendar->addDataAttributes('2025-01-14', ['data-attribute-1' => 'value', 'data-attribute-2' => 'value-2']);
 
+    # options for draw method
+    $options = [
+        'color' => 'blue', # One of the predefined colour schemes.
+        'startDate' => date('Y-m-d'), # the start date of the calendar.
+        'timeInterval' => 10, # the interval between the times - only applicable on the week view calendar.
+        'startTime' => '09:00', # the starting time for the week view calendar. For a 9-5 calendar, use 09:00
+        'endTime' => '17:00', # the end time for the weekview calendar. For a 9-5 calendar, use 17:00
+    ];
+    $calendar->draw($options);
+    
     # if needed, add event
 	$calendar->addEvent(
 	    '2022-01-14',   # start date in either Y-m-d or Y-m-d H:i if you want to add a time.
@@ -150,7 +178,7 @@ Or, you can break it down with full customisability:
     echo $calendar->draw(date('Y-m-d'), 'blue');    # print a blue calendar  
     
     # you can also call ->display(), which handles the echo'ing and adding the stylesheet.
-    echo $calendar->display(array(date('Y-m-d'))); # draw this months calendar    
+    echo $calendar->display(['date' => date('Y-m-d')]); # draw this months calendar    
 
 ```
 #### Draw a 'Week View' calendar
@@ -184,7 +212,7 @@ Instead of a 'month view' calendar, you can now render as a 'week view'. To do t
 
     $calendar = new Calendar;
 
-    $calendar->addEvents($events)->setTimeFormat('00:00', '00:00', 10)->useWeekView()->display(date('Y-m-d'), 'green');
+    $calendar->addEvents($events)->setTimeFormat('00:00', '00:00', 10)->useWeekView()->display(['startDate' => date('Y-m-d'), 'color' => 'green']);
 
 ```
 
@@ -192,8 +220,8 @@ You can change the start/end times of the day, along with the time interval by u
 
 ```php
 
-    $calendar->setTimeFormat('00:00', '00:00', 10)->useWeekView()->display(date('Y-m-d'), 'green');
-    # This will print a week view calendar with 10 minute slots from midnight to midnight - ie. 00:00, 00:10, 00:20 and so on.
+    $calendar->setTimeFormat('09:00', '17:00', 10)->useWeekView()->display(['startDate' => date('Y-m-d'), 'green']);
+    # This will print a week view calendar with 10 minute slots from 9AM to 5PM - ie. 08:00, 08:10, 08:20 and so on.
 
 ```
 
@@ -205,7 +233,7 @@ You can now change the weekly start date from a **Sunday** to a **Monday**. To a
 
     $calendar = new Calendar;
     $calendar->useMondayStartingDate();
-    $calendar->display(date('Y-m-d'), 'green');
+    $calendar->display(['startDate' => date('Y-m-d'), 'color' => 'green']);
 
 ```
 
