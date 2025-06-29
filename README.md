@@ -55,7 +55,7 @@ Instead, it now expects an associative array, like:
 
 ```php
 
-$calendar->display(['date' => '2025-05-01']);
+$calendar->display(['startDate' => '2025-05-01']);
 
 ```
 
