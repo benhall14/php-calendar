@@ -163,7 +163,7 @@ class Week extends View
                 $content .= '</td>';
             }
 
-            $content .= '<tr/>';
+            $content .= '</tr>';
         }
 
         return $content;
